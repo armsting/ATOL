@@ -1,17 +1,16 @@
 #include "mainwindow.h"
-#include "libfptr10.h"
 #include <iostream>
+#include <device.h>
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
-    libfptr_handle fptr;
-    libfptr_create(&fptr);
+    QVector<QString> list;
 
-    std::cout<<libfptr_get_version_string()<<std::endl;
-
-    libfptr_destroy(&fptr);//дестрой
+    getComPortList(&list);
     /* QApplication a(argc, argv);
     MainWindow w;
     w.show();
