@@ -1,5 +1,5 @@
 #include "atoldriver.h"
-#include "iostream"
+#include <iostream>
 
 AtolDriver::AtolDriver(){
 
@@ -12,7 +12,7 @@ AtolDriver::AtolDriver(){
  */
 void AtolDriver::setSettings(){
 
-    libfptr_set_single_setting(fptr, LIBFPTR_SETTING_MODEL, std::to_wstring(LIBFPTR_MODEL_ATOL_AUTO).c_str());
+  //  libfptr_set_single_setting(fptr, LIBFPTR_SETTING_MODEL, std::to_wstring(LIBFPTR_MODEL_ATOL_AUTO).c_str());
    /* libfptr_set_single_setting(fptr, LIBFPTR_SETTING_PORT, std::to_wstring(LIBFPTR_PORT_COM).c_str());
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_COM_FILE, L"COM5");
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_BAUDRATE, LIBFPTR_PORT_BR_115200);

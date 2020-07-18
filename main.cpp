@@ -4,13 +4,13 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 
-#include <QApplication>
-
 int main(int argc, char *argv[])
 {
     QVector<QString> list;
 
     getComPortList(&list);
+    std::cout<<"Привет\n";
+
     /* QApplication a(argc, argv);
     MainWindow w;
     w.show();
