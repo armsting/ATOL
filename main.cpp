@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
 
     libfptr_handle fptr;
     libfptr_create(&fptr);
-
     std::cout<<libfptr_get_version_string()<<"\n";
 
     /* QApplication a(argc, argv);

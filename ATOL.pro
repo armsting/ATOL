@@ -18,14 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     atoldriver.cpp \
+    connection.cpp \
     device.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    position.cpp
 
 HEADERS += \
     atoldriver.h \
+    connection.h \
     device.h \
-    mainwindow.h
+    mainwindow.h \
+    position.h
 
 FORMS += \
     mainwindow.ui
