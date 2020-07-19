@@ -3,53 +3,43 @@
 /*Класс в котором сохраняется вся информация о товарной позиции
 */
 
-Position::Position()
-{
-    name = L"";
-    price = 0;
-    quantity = 0;
-    vat = TAX_NO;
+Position::Position(){
 }
 
 
-Position::Position(std::wstring _name, double _price, double _quantity, tax_type _vat)
-{
-    this->name = _name;
-    this->price = _price;
-    this->quantity = _quantity;
-    this->vat = _vat;
+Position::Position(const std::wstring &name, const double &price, const double &quantity, tax_type vat):
+    name_(name), price_(price), quantity_(quantity), vat_(vat){
 }
 
 
-void Position::setName(std::wstring _name){
-    this->name = _name;
+void Position::setName(const std::wstring &name){
+    name_ = name;
 }
 
-void Position::setPrice(double _price){
-    this->price = _price;
+void Position::setPrice(const double &price){
+    price_ = price;
 }
 
-void Position::setQuantity(double _quantity){
-    this->quantity = _quantity;
+void Position::setQuantity(const double &quantity){
+    quantity_ = quantity;
 }
 
-void Position::setTax_type(tax_type _vat){
-    this->vat = _vat;
+void Position::setTax_type(tax_type vat){
+    vat_ = vat;
 }
 
 std::wstring Position::getName(){
-    return this->name;
+    return name_;
 }
 
-double Position::getPrice()
-{
-     return this->price;
+double Position::getPrice(){
+     return price_;
 }
 
 double Position::getQuantity(){
-    return this->quantity;
+    return quantity_;
 }
 
 tax_type Position::getTax_type(){
-    return this->vat;
+    return vat_;
 }

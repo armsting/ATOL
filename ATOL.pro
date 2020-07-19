@@ -17,17 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    atoldriver.cpp \
+    atol.cpp \
     connection.cpp \
     device.cpp \
+    kkmparameters.cpp \
     main.cpp \
     mainwindow.cpp \
     position.cpp
 
 HEADERS += \
-    atoldriver.h \
+    atol.h \
     connection.h \
     device.h \
+    kkmparameters.h \
     mainwindow.h \
     position.h
 

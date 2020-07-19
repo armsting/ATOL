@@ -15,10 +15,10 @@ class Position
 {
 public:
     Position();
-    Position(std::wstring name, double price, double quantity, tax_type vat);
-    void setName(std::wstring name);
-    void setPrice(double price);
-    void setQuantity(double quantity);
+    Position(const std::wstring &name, const double &price, const double &quantity, tax_type vat);
+    void setName(const std::wstring &name);
+    void setPrice(const double &price);
+    void setQuantity(const double &quantity);
     void setTax_type(tax_type vat);
 
     std::wstring getName();
@@ -27,10 +27,10 @@ public:
     tax_type getTax_type();
 
 private:
-    std::wstring name;
-    double price;
-    double quantity;
-    tax_type vat;
+    std::wstring name_;
+    double price_;
+    double quantity_;
+    tax_type vat_;
 };
 
 #endif // POSITION_H
