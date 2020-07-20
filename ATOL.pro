@@ -29,6 +29,7 @@ HEADERS += \
     atol.h \
     connection.h \
     device.h \
+    enumkkm.h \
     kkmparameters.h \
     mainwindow.h \
     position.h

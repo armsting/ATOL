@@ -5,12 +5,12 @@
 
 /*Метод возвращает списко com портов*/
 
-void getComPortList(QVector<QString> *comPortList)
+void getComPortList(std::vector<std::wstring> &comPortList)
 {
-    comPortList->clear();
+    comPortList.clear();
 
-    foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts()){
-        comPortList->append(info.portName());
+    for(auto port: QSerialPortInfo::availablePorts()){
+        comPortList.push_back(port.portName().toStdWString());
     }
 }
 

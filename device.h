@@ -4,6 +4,6 @@
 
 
 
-void getComPortList(QVector<QString> *comPortList); //заполняет список активных com портов системы
+void getComPortList(std::vector<std::wstring> &comPortList); //заполняет список активных com портов системы
 
 #endif // DEVICE_H

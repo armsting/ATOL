@@ -1,30 +1,33 @@
 #include "mainwindow.h"
 #include <iostream>
 #include <device.h>
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
-#include "libfptr10.h"
+#include "atol.h"
+#include "windows.h"
+#include <codecvt>
 
 int main(int argc, char *argv[])
 {
-    QVector<QString> list;
+    Connection connect;
+    connect.setSerialPort(L"COM6");
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+    std::wstring t = myconv.from_bytes("абвгдеёжзийклмнопрстуфхцчшщъыьэюя");
 
-    getComPortList(&list);
+    Position position_1(t, 1000, 2, VATRate::VAT120);
 
-    libfptr_handle fptr;
-    libfptr_create(&fptr);
-    std::cout<<libfptr_get_version_string()<<"\n";
-    wchar_t settings[1024] = {0};
-    swprintf(&settings[0], 1024, L"{\"%ls\": %d, \"%ls\": %d, \"%ls\": \"%ls\", \"%ls\": %d}",
-        LIBFPTR_SETTING_MODEL, LIBFPTR_MODEL_ATOL_AUTO,
-        LIBFPTR_SETTING_PORT, LIBFPTR_PORT_COM,
-        LIBFPTR_SETTING_COM_FILE, L"COM5",
-        LIBFPTR_SETTING_BAUDRATE, LIBFPTR_PORT_BR_115200)
-    libfptr_set_settings(fptr, settings);
+    KkmParameters param;
+
+    param.setConnection(connect);
+    param.addPosition(position_1);
+    param.setCashierName(t);
+    param.setPayBankCardMoney(2000);
+    param.setCheckType(CheckType::SALE_RETURN);
+
+    Atol::formReceipt(param);
+
+    Atol::shiftClose(param);
+
     /* QApplication a(argc, argv);
     MainWindow w;
     w.show();
     return a.exec();*/
-
-    libfptr_destroy(&fptr);
 }

@@ -1,36 +1,30 @@
 #ifndef POSITION_H
 #define POSITION_H
 #include<string>
+#include"enumkkm.h"
 
-enum tax_type
-{
-    TAX_NO,
-    TAX_VAT0,
-    TAX_VAT10,
-    TAX_VAT20
-};
 
 /*Класс в котором сохраняется вся информация о товарной позиции */
 class Position
 {
 public:
     Position();
-    Position(const std::wstring &name, const double &price, const double &quantity, tax_type vat);
+    Position(const std::wstring &name, double price, double quantity, VATRate vat);
     void setName(const std::wstring &name);
-    void setPrice(const double &price);
-    void setQuantity(const double &quantity);
-    void setTax_type(tax_type vat);
+    void setPrice(double price);
+    void setQuantity(double quantity);
+    void setTax_type(VATRate vat);
 
-    std::wstring getName();
-    double getPrice();
-    double getQuantity();
-    tax_type getTax_type();
+    std::wstring getName() const noexcept;
+    double getPrice() const noexcept;
+    double getQuantity() const noexcept;
+    VATRate getTax_type() const noexcept;
 
 private:
     std::wstring name_;
     double price_;
     double quantity_;
-    tax_type vat_;
+    VATRate vat_;
 };
 
 #endif // POSITION_H
