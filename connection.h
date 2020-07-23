@@ -2,9 +2,10 @@
 #define CONNECTION_H
 #include<string>
 #include"enumkkm.h"
+#include <codecvt>
 
 /*
- * РљР»Р°СЃСЃ РѕРїРёСЃС‹РІР°СЋС‰РёР№ РїР°СЂР°РјРµС‚СЂС‹ СЃРІСЏР·Рё СЃ РљРљРў
+ * Класс описывает настройки подключения к ККМ
  */
 
 class Connection

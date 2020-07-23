@@ -1,18 +1,17 @@
 #include "connection.h"
 
 /*
- * Р РµР°Р»РёР·Р°С†РёСЏ РєР»Р°СЃСЃР° РѕРїРёСЃС‹РІР°СЋС‰РµРіРѕ РїР°СЂР°РјРµС‚СЂС‹ СЃРІСЏР·Рё СЃ РљРљРў
+ * Класс описывает настройки подключения к ККМ
 */
 Connection::Connection():baudrate_(Baudrate::PORT_BR_115200){
 }
 
 Connection::Connection(const std::wstring &serialPort):
-    serialPort_(serialPort), baudrate_(Baudrate::PORT_BR_115200){
-
+    baudrate_(Baudrate::PORT_BR_115200), serialPort_(serialPort){
 }
 
 Connection::Connection(const std::wstring& serialPort, Baudrate baudrate):
-    serialPort_(serialPort), baudrate_(baudrate){
+    baudrate_(baudrate), serialPort_(serialPort){
 }
 
 void Connection::setSerialPort(const std::wstring& serialPort){

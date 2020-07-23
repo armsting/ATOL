@@ -26,7 +26,9 @@ enum class VATRate{
 
 enum class CheckType{
     SALE = 0,
-    SALE_RETURN = 1
+    SALE_RETURN = 1,
+    SHIFT_OPEN = 2,
+    SHIFT_CLOSE = 3
 };
 
 #endif // ENUMKKM_H

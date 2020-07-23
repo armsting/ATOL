@@ -15,6 +15,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+
+    void on_shiftOpenButton_clicked();
+
+    void on_x_reportButton_clicked();
+
+    void on_settingsButton_clicked();
+
+    void on_shiftClose_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

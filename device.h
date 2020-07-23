@@ -4,6 +4,6 @@
 
 
 
-void getComPortList(std::vector<std::wstring> &comPortList); //Р·Р°РїРѕР»РЅСЏРµС‚ СЃРїРёСЃРѕРє Р°РєС‚РёРІРЅС‹С… com РїРѕСЂС‚РѕРІ СЃРёСЃС‚РµРјС‹
+void getComPortList(std::vector<std::wstring> &comPortList); //Метод возвращает вектор с активными ком портами системы
 
 #endif // DEVICE_H

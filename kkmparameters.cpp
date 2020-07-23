@@ -18,24 +18,24 @@ void KkmParameters::setCheckType(CheckType checkType){
 
 void KkmParameters::setPayCashMoney(double payCashMoney){
     if(payCashMoney < 0){
-        throw std::runtime_error("Ð¡ÑƒÐ¼Ð¼Ð° Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹ Ð½Ð°Ð»Ð¸Ñ‡Ð½Ñ‹Ð¼Ð¸ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ð¹");
+        throw std::runtime_error("Ñóììà íàëè÷íûìè íå ìîæåò áûòü îòðèöàòåëüíîé");
     }
     payCashMoney_ = payCashMoney;
 }
 
 void KkmParameters::setPayBankCardMoney(double payBankCardMoney){
     if(payBankCardMoney < 0){
-        throw std::runtime_error("Ð¡ÑƒÐ¼Ð¼Ð° Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹ Ð±ÐµÐ·Ð½Ð°Ð»Ð¸Ñ‡Ð½Ñ‹Ð¼Ð¸ Ð½Ðµ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¾Ñ‚Ñ€Ð¸Ñ†Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ð¹") ;
+        throw std::runtime_error("Ñóììà áåçíàëè÷íûìè íå ìîæåò áûòü îòðèöàòåëüíîé") ;
     }
     payBankCardMoney_ = payBankCardMoney;
 }
 
 void KkmParameters::setCashierINN(const std::wstring &cashierINN){
     if(cashierINN.length()!= 10 || cashierINN.length()!=12){
-        throw std::runtime_error("ÐÐµÐ²ÐµÑ€Ð½Ð°Ñ Ð´Ð»Ð¸Ð½Ð° Ð˜ÐÐ") ;
+        throw std::runtime_error("Íåâåðíàÿ äëèíà ÈÍÍ") ;
     }
     if(cashierINN.find_first_not_of(L"0123456789") != std::string::npos){
-        throw std::runtime_error("ÐÐµÐ²Ð°Ð»Ð¸Ð´Ð½Ñ‹Ð¹ Ð˜ÐÐ. Ð˜ÐÐ Ð´Ð¾Ð»Ð¶ÐµÐ½ ÑÐ¾Ð´ÐµÑ€Ð¶Ð°Ñ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ†Ð¸Ñ„Ñ€Ñ‹") ;
+        throw std::runtime_error("Íåâàëèäíûé ÈÍÍ. ÈÍÍ äîëæåí ñîäåðæàòü òîëüêî öèôðû") ;
     }
     cashierINN_ = cashierINN;
 }

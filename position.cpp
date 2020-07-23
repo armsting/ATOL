@@ -1,14 +1,13 @@
 #include "position.h"
 
-/*РљР»Р°СЃСЃ РІ РєРѕС‚РѕСЂРѕРј СЃРѕС…СЂР°РЅСЏРµС‚СЃСЏ РІСЃСЏ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё
+/*Класс описывает параметры товарной позиции
 */
 
 Position::Position(){
 }
 
 
-Position::Position(const std::wstring &name, double price, double quantity, VATRate vat):
-    name_(name), vat_(vat){
+Position::Position(const std::wstring &name, double price, double quantity, VATRate vat):vat_(vat), name_(name){
     setPrice(price);
     setQuantity(quantity);
 }
@@ -19,14 +18,14 @@ void Position::setName(const std::wstring &name){
 
 void Position::setPrice(double price){
     if(price < 0){
-        throw std::runtime_error("Р¦РµРЅР° Сѓ С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№");
+        throw std::runtime_error("Цена товарной позиции не может быть отрицательной");
     }
     price_ = price;
 }
 
 void Position::setQuantity(double quantity){
     if(quantity <= 0){
-        throw std::runtime_error("РљРѕР»РёС‡РµСЃС‚РІРѕ Сѓ С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ >=0");
+        throw std::runtime_error("Количество у товарной позиции не может быть >=0");
     }
     quantity_ = quantity;
 }
