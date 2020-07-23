@@ -12,10 +12,10 @@ class Connection
 {
 public:
     Connection();
-    Connection(const std::wstring &serialPort);
-    Connection(const std::wstring &serialPort, Baudrate baudrate);
-    void setSerialPort(const std::wstring &serialPort);
-    void setBaudrate(Baudrate baudrate);
+    Connection(const std::wstring &serialPort) noexcept;
+    Connection(const std::wstring &serialPort, Baudrate baudrate) noexcept;
+    void setSerialPort(const std::wstring &serialPort) noexcept;
+    void setBaudrate(Baudrate baudrate) noexcept;
 
     std::wstring getSerialPort() const noexcept;
     Baudrate getBaudrate() const noexcept;

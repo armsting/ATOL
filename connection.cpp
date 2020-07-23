@@ -6,19 +6,19 @@
 Connection::Connection():baudrate_(Baudrate::PORT_BR_115200){
 }
 
-Connection::Connection(const std::wstring &serialPort):
-    baudrate_(Baudrate::PORT_BR_115200), serialPort_(serialPort){
+Connection::Connection(const std::wstring &serialPort) noexcept:
+    baudrate_(Baudrate::PORT_BR_115200), serialPort_(serialPort) {
 }
 
-Connection::Connection(const std::wstring& serialPort, Baudrate baudrate):
+Connection::Connection(const std::wstring& serialPort, Baudrate baudrate) noexcept:
     baudrate_(baudrate), serialPort_(serialPort){
 }
 
-void Connection::setSerialPort(const std::wstring& serialPort){
+void Connection::setSerialPort(const std::wstring& serialPort) noexcept{
     serialPort_ = serialPort;
 }
 
-void Connection::setBaudrate(Baudrate baudrate){
+void Connection::setBaudrate(Baudrate baudrate) noexcept{
     baudrate_= baudrate;
 }
 

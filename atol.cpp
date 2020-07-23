@@ -6,7 +6,7 @@
  * Класс реализует методы основные методы работы с ККМ АТОЛ
 */
 
-int Atol::shiftOpen(const KkmParameters &kkmParameters, std::wstring &error){ //Метод открытия смены
+int Atol::shiftOpen(const KkmParameters &kkmParameters, std::wstring &error) noexcept{ //Метод открытия смены
     libfptr_handle fptr; //Инициализируем драйвер
 
     if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
@@ -49,7 +49,7 @@ int Atol::shiftOpen(const KkmParameters &kkmParameters, std::wstring &error){ //
     return 0;
 }
 
-int Atol::shiftClose(const KkmParameters &kkmParameters, std::wstring &error){//Метод закрытия смены
+int Atol::shiftClose(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Метод закрытия смены
     libfptr_handle fptr; //Инициализируем драйвер
 
     if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
@@ -94,7 +94,7 @@ int Atol::shiftClose(const KkmParameters &kkmParameters, std::wstring &error){//
     return 0;
 }
 
-int Atol::cashInsert(const KkmParameters &kkmParameters, std::wstring &error){//Внесение наличности
+int Atol::cashInsert(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Внесение наличности
     libfptr_handle fptr; //Инициализируем драйвер
 
     if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
@@ -121,7 +121,7 @@ int Atol::cashInsert(const KkmParameters &kkmParameters, std::wstring &error){//
     return 0;
 }
 
-int Atol::cashWithdraw(const KkmParameters &kkmParameters, std::wstring &error){//Изъятие наличности
+int Atol::cashWithdraw(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Изъятие наличности
     libfptr_handle fptr; //Инициализируем драйвер
 
     if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
@@ -148,7 +148,7 @@ int Atol::cashWithdraw(const KkmParameters &kkmParameters, std::wstring &error){
     return 0;
 }
 
-int Atol::x_report(const KkmParameters &kkmParameters, std::wstring &error){//Печатаем Х-отчёт
+int Atol::x_report(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Печатаем Х-отчёт
 
     libfptr_handle fptr; //Инициализируем драйвер
 
@@ -176,7 +176,7 @@ int Atol::x_report(const KkmParameters &kkmParameters, std::wstring &error){//Пе
     return 0;
 }
 
-int Atol::formReceipt(const KkmParameters &kkmParameters, std::wstring &error){//Формирование фискального чека
+int Atol::formReceipt(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Формирование фискального чека
     libfptr_handle fptr; //Инициализируем драйвер
 
     if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
@@ -232,7 +232,7 @@ int Atol::formReceipt(const KkmParameters &kkmParameters, std::wstring &error){/
     return 0;
 }
 
-int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr){//Открытие чека с определённым типом
+int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Открытие чека с определённым типом
 
     switch (kkmParameters.getCheckType()) {
     case CheckType::SALE:
@@ -246,7 +246,7 @@ int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr){//О
     }
 }
 
-int Atol::registeringPositions(const KkmParameters &kkmParameters, libfptr_handle fptr){//Регистрация товарных позиций
+int Atol::registeringPositions(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Регистрация товарных позиций
     auto positions = kkmParameters.getPositionsList();
 
     for(auto pos: positions) {
@@ -261,7 +261,7 @@ int Atol::registeringPositions(const KkmParameters &kkmParameters, libfptr_handl
     return 0;
 }
 
-int Atol::paymentRegistration(const KkmParameters &kkmParameters, libfptr_handle fptr){//Регистрация оплат
+int Atol::paymentRegistration(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Регистрация оплат
     if(kkmParameters.getPayBankCardMoney() != 0){
         libfptr_set_param_int(fptr, LIBFPTR_PARAM_PAYMENT_TYPE, LIBFPTR_PT_ELECTRONICALLY);
         libfptr_set_param_double(fptr, LIBFPTR_PARAM_PAYMENT_SUM, kkmParameters.getPayBankCardMoney());
@@ -279,7 +279,7 @@ int Atol::paymentRegistration(const KkmParameters &kkmParameters, libfptr_handle
     return 0;
 }
 
-libfptr_tax_type Atol::convertVatToAtol(VATRate vat){//Конвентируем наши ставки НДС в АТОЛовские
+libfptr_tax_type Atol::convertVatToAtol(VATRate vat) noexcept{//Конвентируем наши ставки НДС в АТОЛовские
     switch (vat) {
     case VATRate::VAT0:
         return libfptr_tax_type::LIBFPTR_TAX_VAT0;
@@ -296,7 +296,7 @@ libfptr_tax_type Atol::convertVatToAtol(VATRate vat){//Конвентируем наши ставки 
     }
 }
 
-int Atol::connection(const KkmParameters &kkmParameters, libfptr_handle fptr){ //Подключение к ККМ АТОЛ
+int Atol::connection(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{ //Подключение к ККМ АТОЛ
 
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_MODEL, std::to_wstring(LIBFPTR_MODEL_ATOL_AUTO).c_str());
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_PORT, std::to_wstring(LIBFPTR_PORT_COM).c_str());
@@ -314,20 +314,20 @@ int Atol::connection(const KkmParameters &kkmParameters, libfptr_handle fptr){ /
     return libfptr_is_opened(fptr);
 }
 
-void Atol::disconnection(libfptr_handle fptr){//Метод завершающий соединение с драйвером АТОЛа
+void Atol::disconnection(libfptr_handle fptr) noexcept{//Метод завершающий соединение с драйвером АТОЛа
 
     libfptr_close(fptr); //Дисконнект
     libfptr_destroy(&fptr);//Деинициализация драйвера
 }
 
-int Atol::registerCashier(const KkmParameters &kkmParameters, libfptr_handle fptr){ //Регистрация Кассира
+int Atol::registerCashier(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{ //Регистрация Кассира
 
     libfptr_set_param_str(fptr, 1021, std::wstring(kkmParameters.getCashierName()).c_str());
     libfptr_set_param_str(fptr, 1203, std::wstring(kkmParameters.getCashierINN()).c_str());
     return libfptr_operator_login(fptr);
 }
 
-std::wstring Atol::getAnError(libfptr_handle fptr){//Выводим сообщение об ошибке в случае таковой
+std::wstring Atol::getAnError(libfptr_handle fptr) noexcept{//Выводим сообщение об ошибке в случае таковой
 
     std::wstring error_message;
     std::vector<wchar_t> str(1);
@@ -345,7 +345,7 @@ std::wstring Atol::getAnError(libfptr_handle fptr){//Выводим сообщение об ошибке
     return std::wstring(error_message);
 }
 
-int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type){//Метод закрывающий/отменяющий/допечатывающий предыдущий документ
+int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type) noexcept{//Метод закрывающий/отменяющий/допечатывающий предыдущий документ
 
     if(type == CheckType::SALE || type == CheckType::SALE_RETURN){//Закрываем документ согласно его типу
         libfptr_close_receipt(fptr);
@@ -370,7 +370,7 @@ int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type){//Метод закры
     return 0;
 }
 
-int Atol::isConnection(const Connection &connection, std::wstring &error){//Лайт метод для проверки соединения с ККМ АТОЛ
+int Atol::isConnection(const Connection &connection, std::wstring &error) noexcept{//Лайт метод для проверки соединения с ККМ АТОЛ
     libfptr_handle fptr; //Инициализируем драйвер
 
     if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера

@@ -4,55 +4,43 @@ KkmParameters::KkmParameters(){
 
 }
 
-void KkmParameters::setConnection(const Connection &connections){
+void KkmParameters::setConnection(const Connection &connections) noexcept{
     connections_ = connections;
 }
 
-void KkmParameters::setBuyerAddress(const std::wstring &buyerAddress){
+void KkmParameters::setBuyerAddress(const std::wstring &buyerAddress) noexcept{
     buyerAddress_ = buyerAddress;
 }
 
-void KkmParameters::setCheckType(CheckType checkType){
+void KkmParameters::setCheckType(CheckType checkType) noexcept{
     checkType_ = checkType;
 }
 
-void KkmParameters::setPayCashMoney(double payCashMoney){
-    if(payCashMoney < 0){
-        throw std::runtime_error("Сумма наличными не может быть отрицательной");
-    }
+void KkmParameters::setPayCashMoney(double payCashMoney) noexcept{
     payCashMoney_ = payCashMoney;
 }
 
-void KkmParameters::setPayBankCardMoney(double payBankCardMoney){
-    if(payBankCardMoney < 0){
-        throw std::runtime_error("Сумма безналичными не может быть отрицательной") ;
-    }
+void KkmParameters::setPayBankCardMoney(double payBankCardMoney) noexcept{
     payBankCardMoney_ = payBankCardMoney;
 }
 
-void KkmParameters::setCashierINN(const std::wstring &cashierINN){
-    if(cashierINN.length()!= 10 || cashierINN.length()!=12){
-        throw std::runtime_error("Неверная длина ИНН") ;
-    }
-    if(cashierINN.find_first_not_of(L"0123456789") != std::string::npos){
-        throw std::runtime_error("Невалидный ИНН. ИНН должен содержать только цифры") ;
-    }
+void KkmParameters::setCashierINN(const std::wstring &cashierINN) noexcept{
     cashierINN_ = cashierINN;
 }
 
-void KkmParameters::setCashierName(const std::wstring &cashierName){
+void KkmParameters::setCashierName(const std::wstring &cashierName) noexcept{
     cashierName_ = cashierName;
 }
 
-void KkmParameters::addPosition(const Position &position){
+void KkmParameters::addPosition(const Position &position) noexcept{
     position_.push_back(position);
 }
 
-void KkmParameters::setPositionsList(const std::vector<Position> &position){
+void KkmParameters::setPositionsList(const std::vector<Position> &position) noexcept{
     position_ = position;
 }
 
-void KkmParameters::clearPositionsList(){
+void KkmParameters::clearPositionsList() noexcept{
     position_.clear();
 }
 

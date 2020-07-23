@@ -20,16 +20,16 @@ class KkmParameters
 
 public:
     KkmParameters();
-    void setConnection(const Connection &connections);
-    void setBuyerAddress(const std::wstring &buyerAddress);
-    void setCheckType(CheckType checkType);
-    void setPayCashMoney(double payCashMoney);
-    void setPayBankCardMoney(double payBankCardMoney);
-    void setCashierINN(const std::wstring &cashierINN);
-    void setCashierName(const std::wstring &cashierName);
-    void addPosition(const Position &position);
-    void setPositionsList(const std::vector<Position> &position);
-    void clearPositionsList();
+    void setConnection(const Connection &connections) noexcept;
+    void setBuyerAddress(const std::wstring &buyerAddress) noexcept;
+    void setCheckType(CheckType checkType) noexcept;
+    void setPayCashMoney(double payCashMoney) noexcept;
+    void setPayBankCardMoney(double payBankCardMoney) noexcept;
+    void setCashierINN(const std::wstring &cashierINN) noexcept;
+    void setCashierName(const std::wstring &cashierName) noexcept;
+    void addPosition(const Position &position) noexcept;
+    void setPositionsList(const std::vector<Position> &position) noexcept;
+    void clearPositionsList() noexcept;
 
     Connection getConnection() const noexcept;
     std::wstring getBuyerAddress() const noexcept;
