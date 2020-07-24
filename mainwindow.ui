@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>888</width>
     <height>600</height>
    </rect>
   </property>
@@ -17,10 +17,10 @@
    <widget class="QPushButton" name="shiftOpenButton">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>120</y>
-      <width>131</width>
-      <height>81</height>
+      <x>10</x>
+      <y>490</y>
+      <width>161</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -30,10 +30,10 @@
    <widget class="QPushButton" name="x_reportButton">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>220</y>
-      <width>131</width>
-      <height>81</height>
+      <x>710</x>
+      <y>180</y>
+      <width>171</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -43,10 +43,10 @@
    <widget class="QPushButton" name="settingsButton">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>30</y>
-      <width>131</width>
-      <height>51</height>
+      <x>720</x>
+      <y>490</y>
+      <width>161</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -56,15 +56,114 @@
    <widget class="QPushButton" name="shiftClose">
     <property name="geometry">
      <rect>
-      <x>660</x>
-      <y>330</y>
-      <width>131</width>
-      <height>61</height>
+      <x>180</x>
+      <y>490</y>
+      <width>161</width>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
      <string>Закрыть смену</string>
     </property>
+   </widget>
+   <widget class="QPushButton" name="payButton">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>80</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Оплата</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Insert_Withdraw_cash">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>130</y>
+      <width>171</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Внести/Изъять</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>691</width>
+      <height>221</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Наименование</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Количество</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Цена</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>НДС</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>10</y>
+      <width>171</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>ТИП ЧЕКА</string>
+    </property>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>ПРИХОД</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ВОЗВРАТ ПРИХОДА</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>РАСХОД</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ВОЗВРАТ РАСХОДА</string>
+      </property>
+     </item>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -72,12 +171,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>888</width>
      <height>22</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

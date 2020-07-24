@@ -241,6 +241,12 @@ int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr) noe
     case CheckType::SALE_RETURN:
          libfptr_set_param_int(fptr, LIBFPTR_PARAM_RECEIPT_TYPE, LIBFPTR_RT_SELL_RETURN);
          return libfptr_open_receipt(fptr);
+    case CheckType::BUY:
+         libfptr_set_param_int(fptr, LIBFPTR_PARAM_RECEIPT_TYPE, LIBFPTR_RT_BUY);
+         return libfptr_open_receipt(fptr);
+    case CheckType::BUY_RETURN:
+         libfptr_set_param_int(fptr, LIBFPTR_PARAM_RECEIPT_TYPE, LIBFPTR_RT_BUY_RETURN);
+         return libfptr_open_receipt(fptr);
     default:
         return -1;
     }

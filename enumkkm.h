@@ -28,7 +28,9 @@ enum class CheckType{
     SALE = 0,
     SALE_RETURN = 1,
     SHIFT_OPEN = 2,
-    SHIFT_CLOSE = 3
+    SHIFT_CLOSE = 3,
+    BUY = 4,
+    BUY_RETURN = 5
 };
 
 #endif // ENUMKKM_H
