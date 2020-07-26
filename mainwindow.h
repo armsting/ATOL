@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "kkmparameters.h"
+#include "connection.h"
+#include "enumkkm.h"
+#include <QTextCodec>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,11 +25,28 @@ private slots:
 
     void on_x_reportButton_clicked();
 
-    void on_settingsButton_clicked();
+    void on_Insert_Withdraw_cash_clicked();
 
-    void on_shiftClose_clicked();
+    void on_payButton_clicked();
+
+    void on_refresh_COMPort_listButton_clicked();
+
+    void on_applySettingsButton_clicked();
+
+    void on_pingKKMButton_clicked();
+
+    void on_shiftCloseButton_clicked();
+
+    void on_pushButton_setCashier_clicked();
 
 private:
     Ui::MainWindow *ui;
+    std::vector<std::wstring> comPortList;
+    KkmParameters kkmparameters;
+    Connection connection;
+    std::wstring error;
+    QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
+    Baudrate convertIntToBaudrate(int Baudrate);
+    bool validationINN(const std::string &CashierINN);
 };
 #endif // MAINWINDOW_H

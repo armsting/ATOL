@@ -3,7 +3,7 @@
 /*
  * Класс описывает настройки подключения к ККМ
 */
-Connection::Connection():baudrate_(Baudrate::PORT_BR_115200){
+Connection::Connection():baudrate_(Baudrate::PORT_BR_115200),serialPort_(L"COM1"){
 }
 
 Connection::Connection(const std::wstring &serialPort) noexcept:

@@ -390,10 +390,12 @@ int Atol::isConnection(const Connection &connection, std::wstring &error) noexce
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_BAUDRATE, std::to_wstring(static_cast<int>(connection.getBaudrate())).c_str());
 
     if (libfptr_apply_single_settings(fptr) !=0 ){ //ѕровер€ем успешность выполнени€ метода применени€ настроек
+        error = getAnError(fptr);
         return -1;
     }
 
     if (libfptr_open(fptr) !=0 ){ //ѕровер€ем успешность открыти€ соединени€
+        error = getAnError(fptr);
         return -1;
     }
 
