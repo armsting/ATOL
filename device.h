@@ -1,9 +1,6 @@
-#ifndef DEVICE_H
-#define DEVICE_H
+#pragma once
 #include <QVector>
 
 
 
-void getComPortList(std::vector<std::wstring> &comPortList); //Метод возвращает вектор с активными ком портами системы
-
-#endif // DEVICE_H
+void getComPortList(std::vector<std::wstring> &comPortList); //РњРµС‚РѕРґ РІРѕР·РІСЂР°С‰Р°РµС‚ РІРµРєС‚РѕСЂ СЃ Р°РєС‚РёРІРЅС‹РјРё РєРѕРј РїРѕСЂС‚Р°РјРё СЃРёСЃС‚РµРјС‹

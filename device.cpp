@@ -3,7 +3,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QVector>
 
-/*Вспомогательные методы для работы оборудования*/
+/*В¬СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РјРµС‚РѕРґС‹ РґР»В¤ СЂР°Р±РѕС‚С‹ РѕР±РѕСЂСѓРґРѕРІР°РЅРёВ¤*/
 
 void getComPortList(std::vector<std::wstring> &comPortList)
 {

@@ -1,11 +1,10 @@
-#ifndef POSITION_H
-#define POSITION_H
+#pragma once
 #include<string>
 #include"enumkkm.h"
 #include <codecvt>
 
 
-/* Класс описывает параметры товарной позиции */
+/*  РљР»Р°СЃСЃ РѕРїРёСЃС‹РІР°РµС‚ РїР°СЂР°РјРµС‚СЂС‹ С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё */
 class Position
 {
 public:
@@ -27,5 +26,3 @@ private:
     double quantity_;
     VATRate vat_;
 };
-
-#endif // POSITION_H

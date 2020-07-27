@@ -1,5 +1,4 @@
-#ifndef ENUMKKM_H
-#define ENUMKKM_H
+#pragma once
 
 enum class Baudrate{
     PORT_BR_1200 = 1200,
@@ -32,5 +31,3 @@ enum class CheckType{
     BUY = 4,
     BUY_RETURN = 5
 };
-
-#endif // ENUMKKM_H

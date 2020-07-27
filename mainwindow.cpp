@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
 
-    ui->comboBox_COMPort->clear();//Œ˜ËÒÚÍ‡ ÒÔËÒÍ‡ COM ÔÓÚÓ‚
+    ui->comboBox_COMPort->clear();//–û—á–∏—Å—Ç–∫–∞ —Å–ø–∏—Å–∫–∞ COM –ø–æ—Ä—Ç–æ–≤
 
-    for(auto COMPort: comPortList){//«‡ÔÓÎÌˇÂÏ ÒÔËÒÓÍ COM ÔÓÚÓ‚ ÒËÒÚÂÏ˚
+    for(auto COMPort: comPortList){//–ó–∞–ø–æ–ª–Ω—è–µ–º —Å–ø–∏—Å–æ–∫ COM –ø–æ—Ä—Ç–æ–≤ —Å–∏—Å—Ç–µ–º—ã
        ui->comboBox_COMPort->addItem(QString::fromStdWString(COMPort));
     }
 
@@ -50,12 +50,12 @@ void MainWindow::on_shiftOpenButton_clicked()
         std::string str = convert.to_bytes(error);
 
         QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Œ¯Ë·Í‡ ÔÂ˜‡ÚË ÓÚ˜∏Ú‡ Ó· ÓÚÍ˚ÚËË ÒÏÂÌ˚")),
+                    (codec->toUnicode("–û—à–∏–±–∫–∞ –ø–µ—á–∞—Ç–∏ –æ—Ç—á—ë—Ç–∞ –æ–± –æ—Ç–∫—Ä—ã—Ç–∏–∏ —Å–º–µ–Ω—ã")),
                     tr(str.c_str()),
                     QMessageBox::Yes | QMessageBox::No,
                     this);
-            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("œÓ‚ÚÓËÚ¸")));
-            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("ŒÚÏÂÌ‡")));
+            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("–ü–æ–≤—Ç–æ—Ä–∏—Ç—å")));
+            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("–û—Ç–º–µ–Ω–∞")));
 
         if(messageBox.exec() == QMessageBox::Yes){
             MainWindow::on_shiftOpenButton_clicked();
@@ -68,10 +68,10 @@ void MainWindow::on_shiftOpenButton_clicked()
 
     QMessageBox messageBox(QMessageBox::Information,
                 (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("—ÏÂÌ‡ ÓÚÍ˚Ú‡")),
+                (codec->toUnicode("–°–º–µ–Ω–∞ –æ—Ç–∫—Ä—ã—Ç–∞")),
                 QMessageBox::Yes,
                 this);
-     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("Œ ")));
+     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("–û–ö")));
      messageBox.exec();
 }
 
@@ -84,12 +84,12 @@ void MainWindow::on_x_reportButton_clicked()
         std::string str = convert.to_bytes(error);
 
         QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Œ¯Ë·Í‡ ÔË ÔÂ˜‡ÚË ’-ÓÚ˜∏Ú‡")),
+                    (codec->toUnicode("–û—à–∏–±–∫–∞ –ø—Ä–∏ –ø–µ—á–∞—Ç–∏ –•-–æ—Ç—á—ë—Ç–∞")),
                     tr(str.c_str()),
                     QMessageBox::Yes | QMessageBox::No,
                     this);
-            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("œÓ‚ÚÓËÚ¸")));
-            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("ŒÚÏÂÌ‡")));
+            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("–ü–æ–≤—Ç–æ—Ä–∏—Ç—å")));
+            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("–û—Ç–º–µ–Ω–∞")));
 
         if(messageBox.exec() == QMessageBox::Yes){
             MainWindow::on_x_reportButton_clicked();
@@ -102,10 +102,10 @@ void MainWindow::on_x_reportButton_clicked()
 
     QMessageBox messageBox(QMessageBox::Information,
                 (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("’-ÓÚ˜∏Ú ÛÒÔÂ¯ÌÓ ‡ÒÔÂ˜‡Ú‡Ì")),
+                (codec->toUnicode("–•-–æ—Ç—á—ë—Ç —É—Å–ø–µ—à–Ω–æ —Ä–∞—Å–ø–µ—á–∞—Ç–∞–Ω")),
                 QMessageBox::Yes,
                 this);
-     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("Œ ")));
+     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("–û–ö")));
      messageBox.exec();
 }
 
@@ -121,47 +121,50 @@ void MainWindow::on_payButton_clicked()
 
 void MainWindow::on_refresh_COMPort_listButton_clicked()
 {
-    getComPortList(comPortList);//Œ·ÌÓ‚ËÎË ÒÔËÒÓÍ COM ÔÓÚÓ‚
+    getComPortList(comPortList);//–û–±–Ω–æ–≤–∏–ª–∏ —Å–ø–∏—Å–æ–∫ COM –ø–æ—Ä—Ç–æ–≤
 
-    ui->comboBox_COMPort->clear();//Œ˜ËÒÚÍ‡ ÒÔËÒÍ‡ COM ÔÓÚÓ‚
+    ui->comboBox_COMPort->clear();//–û—á–∏—Å—Ç–∫–∞ —Å–ø–∏—Å–∫–∞ COM –ø–æ—Ä—Ç–æ–≤
 
-    for(auto COMPort: comPortList){//«‡ÔÓÎÌˇÂÏ ÒÔËÒÓÍ COM ÔÓÚÓ‚ ÒËÒÚÂÏ˚
+    for(auto COMPort: comPortList){//–ó–∞–ø–æ–ª–Ω—è–µ–º —Å–ø–∏—Å–æ–∫ COM –ø–æ—Ä—Ç–æ–≤ —Å–∏—Å—Ç–µ–º—ã
        ui->comboBox_COMPort->addItem(QString::fromStdWString(COMPort));
     }
 }
 
 void MainWindow::on_applySettingsButton_clicked()
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-    connection.setSerialPort(convert.from_bytes(ui->comboBox_COMPort->currentText().toStdString())); //«‡‰‡ÎË ÚÂÍÛ˘ËÈ COM ÔÓÚ
+    connection.setSerialPort(ui->comboBox_COMPort->currentText().toStdWString().c_str());//–ó–∞–¥–∞–ª–∏ —Ç–µ–∫—É—â–∏–π COM –ø–æ—Ä—Ç
 
-    connection.setBaudrate(MainWindow::convertIntToBaudrate(ui->comboBox_Baudrate->currentText().toInt())); //«‡‰‡ÎË ÒÍÓÓÒÚ¸ ÚÂÍÛ˘Â„Ó COM ÔÓÚ‡
+    connection.setBaudrate(MainWindow::convertIntToBaudrate(ui->comboBox_Baudrate->currentText().toInt())); //–ó–∞–¥–∞–ª–∏ —Å–∫–æ—Ä–æ—Å—Ç—å —Ç–µ–∫—É—â–µ–≥–æ COM –ø–æ—Ä—Ç–∞
 
     kkmparameters.setConnection(connection);
-    ui->lineEdit_this_COMPort->setText(ui->comboBox_COMPort->currentText());//œÓÔËÒ‡ÎË ÚÂÍÛ˘ËÈ COM ÔÓÚ
-    ui->lineEdit_this_Baudrate->setText(ui->comboBox_Baudrate->currentText());//œÓÔËÒ‡ÎË ÚÂÍÛ˘Û˛ ÒÍÓÓÒÚ¸ ÔÓÚ‡
+
+    ui->lineEdit_this_COMPort->setText(ui->comboBox_COMPort->currentText());//–ü—Ä–æ–ø–∏—Å–∞–ª–∏ —Ç–µ–∫—É—â–∏–π COM –ø–æ—Ä—Ç
+
+    ui->lineEdit_this_Baudrate->setText(ui->comboBox_Baudrate->currentText());//–ü—Ä–æ–ø–∏—Å–∞–ª–∏ —Ç–µ–∫—É—â—É—é —Å–∫–æ—Ä–æ—Å—Ç—å –ø–æ—Ä—Ç–∞
 }
 
 void MainWindow::on_pingKKMButton_clicked()
 {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
+
     Connection connect;
 
-    connect.setSerialPort(convert.from_bytes(ui->comboBox_COMPort->currentText().toStdString()));
+    connect.setSerialPort(ui->comboBox_COMPort->currentText().toStdWString().c_str());
+
     connect.setBaudrate(MainWindow::convertIntToBaudrate(ui->comboBox_Baudrate->currentText().toInt()));
 
     if (Atol::isConnection(connect, error) == 0){
         ui->label_pingKKM->setStyleSheet("color: rgb(0, 100, 0)");
-        ui->label_pingKKM->setText(codec->toUnicode("—‚ˇÁ¸ ÂÒÚ¸"));
+        ui->label_pingKKM->setText(codec->toUnicode("–°–≤—è–∑—å –µ—Å—Ç—å"));
     }
     else{
         ui->label_pingKKM->setStyleSheet("color: rgb(255, 0, 0)");
-        ui->label_pingKKM->setText(codec->toUnicode("—‚ˇÁË ÌÂÚ\n") + convert.to_bytes(error).c_str());
+        ui->label_pingKKM->setText(codec->toUnicode("–°–≤—è–∑–∏ –Ω–µ—Ç\n") + convert.to_bytes(error).c_str());
     }
 }
 
-Baudrate MainWindow::convertIntToBaudrate(int Baudrate){
-    switch (Baudrate) { //«‡‰‡∏Ï ÒÍÓÓÒÚ¸ ÔÓÚ‡
+Baudrate MainWindow::convertIntToBaudrate(int baudrate_){
+    switch (baudrate_) { //–ó–∞–¥–∞—ë–º —Å–∫–æ—Ä–æ—Å—Ç—å –ø–æ—Ä—Ç–∞
         case 1200 :
             return Baudrate::PORT_BR_1200;
         case 2400:
@@ -198,12 +201,12 @@ void MainWindow::on_shiftCloseButton_clicked()
         std::string str = convert.to_bytes(error);
 
         QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Œ¯Ë·Í‡ ÔÂ˜‡ÚË Z-ÓÚ˜∏Ú‡")),
+                    (codec->toUnicode("–û—à–∏–±–∫–∞ –ø–µ—á–∞—Ç–∏ Z-–æ—Ç—á—ë—Ç–∞")),
                     tr(str.c_str()),
                     QMessageBox::Yes | QMessageBox::No,
                     this);
-            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("œÓ‚ÚÓËÚ¸")));
-            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("ŒÚÏÂÌ‡")));
+            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("–ü–æ–≤—Ç–æ—Ä–∏—Ç—å")));
+            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("–û—Ç–º–µ–Ω–∞")));
 
         if(messageBox.exec() == QMessageBox::Yes){
             MainWindow::on_shiftCloseButton_clicked();
@@ -216,7 +219,7 @@ void MainWindow::on_shiftCloseButton_clicked()
 
     QMessageBox messageBox(QMessageBox::Information,
                 (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("—ÏÂÌ‡ Á‡Í˚Ú‡")),
+                (codec->toUnicode("–°–º–µ–Ω–∞ –∑–∞–∫—Ä—ã—Ç–∞")),
                 QMessageBox::Yes,
                 this);
      messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
@@ -226,17 +229,20 @@ void MainWindow::on_shiftCloseButton_clicked()
 void MainWindow::on_pushButton_setCashier_clicked(){
 
     std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-    std::string CashierName = ui->lineEdit_askCashierName->text().toStdString();
-    std::string CashierINN  = ui->lineEdit_askCashierINN->text().toStdString();
 
-    if ((CashierName == "" && CashierINN == "") || (CashierName == "" && CashierINN != "")){
+    std::wstring CashierName = ui->lineEdit_askCashierName->text().toStdWString().c_str();
+    std::wstring CashierINN  = ui->lineEdit_askCashierINN->text().toStdWString().c_str();
+
+    std::wstring we = ui->lineEdit_askCashierName->text().toStdWString().c_str();
+
+    if ((CashierName == L"" && CashierINN == L"") || (CashierName == L"" && CashierINN != L"")){
         return;
     }
 
     if (!MainWindow::validationINN(CashierINN)){
         QMessageBox messageBox(QMessageBox::Warning,
                     (codec->toUnicode("Retail luxury")),
-                    (codec->toUnicode("»ÕÕ ÌÂ‚‡ÎË‰ÂÌ")),
+                    (codec->toUnicode("–ò–ù–ù –Ω–µ–≤–∞–ª–∏–¥–µ–Ω")),
                     QMessageBox::Yes,
                     this);
          messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
@@ -245,21 +251,21 @@ void MainWindow::on_pushButton_setCashier_clicked(){
     }
 
 
-    kkmparameters.setCashierName(convert.from_bytes(CashierName));
-    kkmparameters.setCashierINN(convert.from_bytes(CashierINN));
+    kkmparameters.setCashierName(CashierName);
+    kkmparameters.setCashierINN(CashierINN);
 
-    if(CashierINN == ""){
-        ui->label_CurrentCashier_Name_INN->setText(codec->toUnicode("“ÂÍÛ˘ËÈ Í‡ÒÒË:   ") +
-                                                   QString(CashierName.c_str()));
+    if(CashierINN == L""){
+        ui->label_CurrentCashier_Name_INN->setText(codec->toUnicode("–¢–µ–∫—É—â–∏–π –∫–∞—Å—Å–∏—Ä:   ") +
+                                                   convert.to_bytes(CashierName).c_str());
     }
     else{
-        ui->label_CurrentCashier_Name_INN->setText(codec->toUnicode("“ÂÍÛ˘ËÈ Í‡ÒÒË:   ") +
-                                                   QString(CashierName.c_str()) + codec->toUnicode(",   »ÕÕ:  ") + QString(CashierINN.c_str()));
+        ui->label_CurrentCashier_Name_INN->setText(codec->toUnicode("–¢–µ–∫—É—â–∏–π –∫–∞—Å—Å–∏—Ä:   ") +
+                                                   convert.to_bytes(CashierName).c_str() + codec->toUnicode(",   –ò–ù–ù:  ") + convert.to_bytes(CashierINN).c_str());
     }
     ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
 }
 
-bool MainWindow::validationINN(const std::string &CashierINN){
+bool MainWindow::validationINN(const std::wstring &CashierINN){
 
     if (CashierINN.length() == 0)
         return true;
@@ -268,7 +274,7 @@ bool MainWindow::validationINN(const std::string &CashierINN){
         return false;
     }
 
-    if (CashierINN.find_first_not_of("0123456789") != std::string::npos)
+    if (CashierINN.find_first_not_of(L"0123456789") != std::wstring::npos)
         return false;
 
     return true;

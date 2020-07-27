@@ -1,7 +1,7 @@
 #include "connection.h"
 
 /*
- * Класс описывает настройки подключения к ККМ
+ * РљР»Р°СЃСЃ РѕРїРёСЃС‹РІР°РµС‚ РЅР°СЃС‚СЂРѕР№РєРё РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє РљРљРњ
 */
 Connection::Connection():baudrate_(Baudrate::PORT_BR_115200),serialPort_(L"COM1"){
 }

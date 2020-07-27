@@ -1,11 +1,10 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#pragma once
 #include<string>
 #include"enumkkm.h"
 #include <codecvt>
 
 /*
- * Класс описывает настройки подключения к ККМ
+ * РљР»Р°СЃСЃ РѕРїРёСЃС‹РІР°РµС‚ РЅР°СЃС‚СЂРѕР№РєРё РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє РљРљРњ
  */
 
 class Connection
@@ -24,5 +23,3 @@ private:
     std::wstring serialPort_;
     Baudrate baudrate_;
 };
-
-#endif // CONNECTION_H

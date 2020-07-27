@@ -1,6 +1,6 @@
 #include "position.h"
 
-/*Класс описывает параметры товарной позиции
+/*В Р»Р°СЃСЃ РѕРїРёСЃС‹РІР°РµС‚ РїР°СЂР°РјРµС‚СЂС‹ С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё
 */
 
 Position::Position(){
@@ -18,14 +18,14 @@ void Position::setName(const std::wstring &name) noexcept{
 
 void Position::setPrice(double price) noexcept{
     if(price < 0){
-        throw std::runtime_error("Цена товарной позиции не может быть отрицательной");
+        throw ("Г·РµРЅР° С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№");
     }
     price_ = price;
 }
 
 void Position::setQuantity(double quantity) noexcept{
     if(quantity <= 0){
-        throw std::runtime_error("Количество у товарной позиции не может быть >=0");
+        throw ("В РѕР»РёС‡РµСЃС‚РІРѕ Сѓ С‚РѕРІР°СЂРЅРѕР№ РїРѕР·РёС†РёРё РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ >=0");
     }
     quantity_ = quantity;
 }

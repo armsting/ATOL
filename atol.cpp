@@ -3,236 +3,236 @@
 
 
 /*
- * Класс реализует методы основные методы работы с ККМ АТОЛ
+ * РљР»Р°СЃСЃ СЂРµР°Р»РёР·СѓРµС‚ РјРµС‚РѕРґС‹ РѕСЃРЅРѕРІРЅС‹Рµ РјРµС‚РѕРґС‹ СЂР°Р±РѕС‚С‹ СЃ РљРљРњ РђРўРћР›
 */
 
-int Atol::shiftOpen(const KkmParameters &kkmParameters, std::wstring &error) noexcept{ //Метод открытия смены
-    libfptr_handle fptr; //Инициализируем драйвер
+int Atol::shiftOpen(const KkmParameters &kkmParameters, std::wstring &error) noexcept{ //РњРµС‚РѕРґ РѕС‚РєСЂС‹С‚РёСЏ СЃРјРµРЅС‹
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
 
-    if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
+    if (Atol::connection(kkmParameters, fptr) < 0){//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РљРљРњ
         error = getAnError(fptr);
-        libfptr_destroy(&fptr);//Деинициализация драйвера
+        libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_OPEN) < 0){//Если предыдущий чек не был закрыт, закрываем его
+    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_OPEN) < 0){//Р•СЃР»Рё РїСЂРµРґС‹РґСѓС‰РёР№ С‡РµРє РЅРµ Р±С‹Р» Р·Р°РєСЂС‹С‚, Р·Р°РєСЂС‹РІР°РµРј РµРіРѕ
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::registerCashier(kkmParameters, fptr) < 0){//Регистрация кассира
+    if (Atol::registerCashier(kkmParameters, fptr) < 0){//Р РµРіРёСЃС‚СЂР°С†РёСЏ РєР°СЃСЃРёСЂР°
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (libfptr_open_shift(fptr) < 0){//Открываем смену
+    if (libfptr_open_shift(fptr) < 0){//РћС‚РєСЂС‹РІР°РµРј СЃРјРµРЅСѓ
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_OPEN) < 0){//Закрываем чек
+    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_OPEN) < 0){//Р—Р°РєСЂС‹РІР°РµРј С‡РµРє
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+    Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return 0;
 }
 
-int Atol::shiftClose(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Метод закрытия смены
-    libfptr_handle fptr; //Инициализируем драйвер
+int Atol::shiftClose(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//РњРµС‚РѕРґ Р·Р°РєСЂС‹С‚РёСЏ СЃРјРµРЅС‹
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
 
-    if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
+    if (Atol::connection(kkmParameters, fptr) < 0){//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РљРљРњ
         error = getAnError(fptr);
-        libfptr_destroy(&fptr);//Деинициализация драйвера
+        libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_CLOSE) < 0){//Если предудущий чек не был закрыт, то закрываем его
+    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_CLOSE) < 0){//Р•СЃР»Рё РїСЂРµРґСѓРґСѓС‰РёР№ С‡РµРє РЅРµ Р±С‹Р» Р·Р°РєСЂС‹С‚, С‚Рѕ Р·Р°РєСЂС‹РІР°РµРј РµРіРѕ
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::registerCashier(kkmParameters, fptr) < 0){//Регистрация кассира
+    if (Atol::registerCashier(kkmParameters, fptr) < 0){//Р РµРіРёСЃС‚СЂР°С†РёСЏ РєР°СЃСЃРёСЂР°
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    libfptr_set_param_int(fptr, LIBFPTR_PARAM_REPORT_TYPE, LIBFPTR_RT_CLOSE_SHIFT);//Параметр закрытия смены
+    libfptr_set_param_int(fptr, LIBFPTR_PARAM_REPORT_TYPE, LIBFPTR_RT_CLOSE_SHIFT);//РџР°СЂР°РјРµС‚СЂ Р·Р°РєСЂС‹С‚РёСЏ СЃРјРµРЅС‹
 
-    if (libfptr_report(fptr) < 0){//Закрываем смену
+    if (libfptr_report(fptr) < 0){//Р—Р°РєСЂС‹РІР°РµРј СЃРјРµРЅСѓ
         error = getAnError(fptr);
         Atol::disconnection(fptr);
         return -1;
     }
 
-    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_CLOSE) < 0){//Закрываем чек
+    if (Atol::closeFiscalDocument(fptr, CheckType::SHIFT_CLOSE) < 0){//Р—Р°РєСЂС‹РІР°РµРј С‡РµРє
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+    Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return 0;
 }
 
-int Atol::cashInsert(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Внесение наличности
-    libfptr_handle fptr; //Инициализируем драйвер
+int Atol::cashInsert(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Р’РЅРµСЃРµРЅРёРµ РЅР°Р»РёС‡РЅРѕСЃС‚Рё
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
 
-    if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
+    if (Atol::connection(kkmParameters, fptr) < 0){//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РљРљРњ
         error = getAnError(fptr);
-        libfptr_destroy(&fptr);//Деинициализация драйвера
+        libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    libfptr_set_param_double(fptr, LIBFPTR_PARAM_SUM, kkmParameters.getPayCashMoney());//Записываем сумму
+    libfptr_set_param_double(fptr, LIBFPTR_PARAM_SUM, kkmParameters.getPayCashMoney());//Р—Р°РїРёСЃС‹РІР°РµРј СЃСѓРјРјСѓ
 
-    if(libfptr_cash_income(fptr) < 0){//Вносим наличность
+    if(libfptr_cash_income(fptr) < 0){//Р’РЅРѕСЃРёРј РЅР°Р»РёС‡РЅРѕСЃС‚СЊ
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+    Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return 0;
 }
 
-int Atol::cashWithdraw(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Изъятие наличности
-    libfptr_handle fptr; //Инициализируем драйвер
+int Atol::cashWithdraw(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//РР·СЉСЏС‚РёРµ РЅР°Р»РёС‡РЅРѕСЃС‚Рё
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
 
-    if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
+    if (Atol::connection(kkmParameters, fptr) < 0){//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РљРљРњ
         error = getAnError(fptr);
-        libfptr_destroy(&fptr);//Деинициализация драйвера
+        libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
     libfptr_set_param_double(fptr, LIBFPTR_PARAM_SUM, kkmParameters.getPayCashMoney());
 
-    if(libfptr_cash_outcome(fptr) < 0){//Изымаем наличность
+    if(libfptr_cash_outcome(fptr) < 0){//РР·С‹РјР°РµРј РЅР°Р»РёС‡РЅРѕСЃС‚СЊ
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+    Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return 0;
 }
 
-int Atol::x_report(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Печатаем Х-отчёт
+int Atol::x_report(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//РџРµС‡Р°С‚Р°РµРј РҐ-РѕС‚С‡С‘С‚
 
-    libfptr_handle fptr; //Инициализируем драйвер
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
 
-    if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
+    if (Atol::connection(kkmParameters, fptr) < 0){//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РљРљРњ
         error = getAnError(fptr);
-        libfptr_destroy(&fptr);//Деинициализация драйвера
+        libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
     libfptr_set_param_int(fptr, LIBFPTR_PARAM_REPORT_TYPE, LIBFPTR_RT_X);
 
-    if(libfptr_report(fptr) < 0){//Печатаем Х-отчёт
+    if(libfptr_report(fptr) < 0){//РџРµС‡Р°С‚Р°РµРј РҐ-РѕС‚С‡С‘С‚
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+    Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return 0;
 }
 
-int Atol::formReceipt(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Формирование фискального чека
-    libfptr_handle fptr; //Инициализируем драйвер
+int Atol::formReceipt(const KkmParameters &kkmParameters, std::wstring &error) noexcept{//Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ С„РёСЃРєР°Р»СЊРЅРѕРіРѕ С‡РµРєР°
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
 
-    if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
+    if (Atol::connection(kkmParameters, fptr) < 0){//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РљРљРњ
         error = getAnError(fptr);
-        libfptr_destroy(&fptr);//Деинициализация драйвера
+        libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Если предыдущий чек не был закрыл, то закрываем/аннулируем его
+    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Р•СЃР»Рё РїСЂРµРґС‹РґСѓС‰РёР№ С‡РµРє РЅРµ Р±С‹Р» Р·Р°РєСЂС‹Р», С‚Рѕ Р·Р°РєСЂС‹РІР°РµРј/Р°РЅРЅСѓР»РёСЂСѓРµРј РµРіРѕ
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::registerCashier(kkmParameters, fptr) < 0){//Регистрация кассира
+    if (Atol::registerCashier(kkmParameters, fptr) < 0){//Р РµРіРёСЃС‚СЂР°С†РёСЏ РєР°СЃСЃРёСЂР°
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::openCheck(kkmParameters, fptr) < 0){//Открытие чека (SALE / SALE_RETURN)
+    if (Atol::openCheck(kkmParameters, fptr) < 0){//РћС‚РєСЂС‹С‚РёРµ С‡РµРєР° (SALE / SALE_RETURN)
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::registeringPositions(kkmParameters, fptr) <0){//Регистрация товарных позиций
+    if (Atol::registeringPositions(kkmParameters, fptr) <0){//Р РµРіРёСЃС‚СЂР°С†РёСЏ С‚РѕРІР°СЂРЅС‹С… РїРѕР·РёС†РёР№
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    if (Atol::paymentRegistration(kkmParameters, fptr)){//Регистрация оплат
+    if (Atol::paymentRegistration(kkmParameters, fptr)){//Р РµРіРёСЃС‚СЂР°С†РёСЏ РѕРїР»Р°С‚
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
 
-    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Закрываем чек (для продажи и возврата одинаково)
+    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Р—Р°РєСЂС‹РІР°РµРј С‡РµРє (РґР»СЏ РїСЂРѕРґР°Р¶Рё Рё РІРѕР·РІСЂР°С‚Р° РѕРґРёРЅР°РєРѕРІРѕ)
         error = getAnError(fptr);
-        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         return -1;
     }
 
-    Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+    Atol::disconnection(fptr);//Р”РёСЃРєРѕРЅРЅРµРєС‚ Рё РґРµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return 0;
 }
 
-int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Открытие чека с определённым типом
+int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//РћС‚РєСЂС‹С‚РёРµ С‡РµРєР° СЃ РѕРїСЂРµРґРµР»С‘РЅРЅС‹Рј С‚РёРїРѕРј
 
     switch (kkmParameters.getCheckType()) {
     case CheckType::SALE:
@@ -252,7 +252,7 @@ int Atol::openCheck(const KkmParameters &kkmParameters, libfptr_handle fptr) noe
     }
 }
 
-int Atol::registeringPositions(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Регистрация товарных позиций
+int Atol::registeringPositions(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Р РµРіРёСЃС‚СЂР°С†РёСЏ С‚РѕРІР°СЂРЅС‹С… РїРѕР·РёС†РёР№
     auto positions = kkmParameters.getPositionsList();
 
     for(auto pos: positions) {
@@ -267,7 +267,7 @@ int Atol::registeringPositions(const KkmParameters &kkmParameters, libfptr_handl
     return 0;
 }
 
-int Atol::paymentRegistration(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Регистрация оплат
+int Atol::paymentRegistration(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{//Р РµРіРёСЃС‚СЂР°С†РёСЏ РѕРїР»Р°С‚
     if(kkmParameters.getPayBankCardMoney() != 0){
         libfptr_set_param_int(fptr, LIBFPTR_PARAM_PAYMENT_TYPE, LIBFPTR_PT_ELECTRONICALLY);
         libfptr_set_param_double(fptr, LIBFPTR_PARAM_PAYMENT_SUM, kkmParameters.getPayBankCardMoney());
@@ -285,7 +285,7 @@ int Atol::paymentRegistration(const KkmParameters &kkmParameters, libfptr_handle
     return 0;
 }
 
-libfptr_tax_type Atol::convertVatToAtol(VATRate vat) noexcept{//Конвентируем наши ставки НДС в АТОЛовские
+libfptr_tax_type Atol::convertVatToAtol(VATRate vat) noexcept{//РљРѕРЅРІРµРЅС‚РёСЂСѓРµРј РЅР°С€Рё СЃС‚Р°РІРєРё РќР”РЎ РІ РђРўРћР›РѕРІСЃРєРёРµ
     switch (vat) {
     case VATRate::VAT0:
         return libfptr_tax_type::LIBFPTR_TAX_VAT0;
@@ -302,38 +302,38 @@ libfptr_tax_type Atol::convertVatToAtol(VATRate vat) noexcept{//Конвентируем наш
     }
 }
 
-int Atol::connection(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{ //Подключение к ККМ АТОЛ
+int Atol::connection(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{ //РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє РљРљРњ РђРўРћР›
 
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_MODEL, std::to_wstring(LIBFPTR_MODEL_ATOL_AUTO).c_str());
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_PORT, std::to_wstring(LIBFPTR_PORT_COM).c_str());
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_COM_FILE, std::wstring(kkmParameters.getConnection().getSerialPort()).c_str());
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_BAUDRATE, std::to_wstring(static_cast<int>(kkmParameters.getConnection().getBaudrate())).c_str());
 
-    if (libfptr_apply_single_settings(fptr) !=0 ){ //Проверяем успешность выполнения метода
+    if (libfptr_apply_single_settings(fptr) !=0 ){ //РџСЂРѕРІРµСЂСЏРµРј СѓСЃРїРµС€РЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РјРµС‚РѕРґР°
         return -1;
     }
 
-    if (libfptr_open(fptr) !=0 ){ //Проверяем успешность выполнения метода
+    if (libfptr_open(fptr) !=0 ){ //РџСЂРѕРІРµСЂСЏРµРј СѓСЃРїРµС€РЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РјРµС‚РѕРґР°
         return -1;
     }
 
     return libfptr_is_opened(fptr);
 }
 
-void Atol::disconnection(libfptr_handle fptr) noexcept{//Метод завершающий соединение с драйвером АТОЛа
+void Atol::disconnection(libfptr_handle fptr) noexcept{//РњРµС‚РѕРґ Р·Р°РІРµСЂС€Р°СЋС‰РёР№ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РґСЂР°Р№РІРµСЂРѕРј РђРўРћР›Р°
 
-    libfptr_close(fptr); //Дисконнект
-    libfptr_destroy(&fptr);//Деинициализация драйвера
+    libfptr_close(fptr); //Р”РёСЃРєРѕРЅРЅРµРєС‚
+    libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 }
 
-int Atol::registerCashier(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{ //Регистрация Кассира
+int Atol::registerCashier(const KkmParameters &kkmParameters, libfptr_handle fptr) noexcept{ //Р РµРіРёСЃС‚СЂР°С†РёСЏ РљР°СЃСЃРёСЂР°
 
     libfptr_set_param_str(fptr, 1021, std::wstring(kkmParameters.getCashierName()).c_str());
     libfptr_set_param_str(fptr, 1203, std::wstring(kkmParameters.getCashierINN()).c_str());
     return libfptr_operator_login(fptr);
 }
 
-std::wstring Atol::getAnError(libfptr_handle fptr) noexcept{//Выводим сообщение об ошибке в случае таковой
+std::wstring Atol::getAnError(libfptr_handle fptr) noexcept{//Р’С‹РІРѕРґРёРј СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ РІ СЃР»СѓС‡Р°Рµ С‚Р°РєРѕРІРѕР№
 
     std::wstring error_message;
     std::vector<wchar_t> str(1);
@@ -347,13 +347,13 @@ std::wstring Atol::getAnError(libfptr_handle fptr) noexcept{//Выводим сообщение 
     for(auto i: str)
         error_message += i;
 
-    error_message = L"Код ошибки: " + std::to_wstring(libfptr_error_code(fptr)) + L": " + error_message;
+    error_message = L"РљРѕРґ РѕС€РёР±РєРё: " + std::to_wstring(libfptr_error_code(fptr)) + L": "  + error_message;
     return std::wstring(error_message);
 }
 
-int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type) noexcept{//Метод закрывающий/отменяющий/допечатывающий предыдущий документ
+int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type) noexcept{//РњРµС‚РѕРґ Р·Р°РєСЂС‹РІР°СЋС‰РёР№/РѕС‚РјРµРЅСЏСЋС‰РёР№/РґРѕРїРµС‡Р°С‚С‹РІР°СЋС‰РёР№ РїСЂРµРґС‹РґСѓС‰РёР№ РґРѕРєСѓРјРµРЅС‚
 
-    if(type == CheckType::SALE || type == CheckType::SALE_RETURN){//Закрываем документ согласно его типу
+    if(type == CheckType::SALE || type == CheckType::SALE_RETURN){//Р—Р°РєСЂС‹РІР°РµРј РґРѕРєСѓРјРµРЅС‚ СЃРѕРіР»Р°СЃРЅРѕ РµРіРѕ С‚РёРїСѓ
         libfptr_close_receipt(fptr);
     }
 
@@ -361,13 +361,13 @@ int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type) noexcept{//Ме
         return -1;
     }
 
-    if (libfptr_get_param_bool(fptr, LIBFPTR_PARAM_DOCUMENT_CLOSED) == 0) { //Док не закрылся, отменяем его
+    if (libfptr_get_param_bool(fptr, LIBFPTR_PARAM_DOCUMENT_CLOSED) == 0) { //Р”РѕРє РЅРµ Р·Р°РєСЂС‹Р»СЃСЏ, РѕС‚РјРµРЅСЏРµРј РµРіРѕ
       libfptr_cancel_receipt(fptr);
       return 0;
     }
 
     if (libfptr_get_param_bool(fptr, LIBFPTR_PARAM_DOCUMENT_PRINTED) == 0) {
-      // Можно сразу вызвать метод допечатывания документа, он завершится с ошибкой, если это невозможно
+      // РњРѕР¶РЅРѕ СЃСЂР°Р·Сѓ РІС‹Р·РІР°С‚СЊ РјРµС‚РѕРґ РґРѕРїРµС‡Р°С‚С‹РІР°РЅРёСЏ РґРѕРєСѓРјРµРЅС‚Р°, РѕРЅ Р·Р°РІРµСЂС€РёС‚СЃСЏ СЃ РѕС€РёР±РєРѕР№, РµСЃР»Рё СЌС‚Рѕ РЅРµРІРѕР·РјРѕР¶РЅРѕ
       if(libfptr_continue_print(fptr) < 0) {
           return -1;
       }
@@ -376,10 +376,10 @@ int Atol::closeFiscalDocument(libfptr_handle fptr, CheckType type) noexcept{//Ме
     return 0;
 }
 
-int Atol::isConnection(const Connection &connection, std::wstring &error) noexcept{//Лайт метод для проверки соединения с ККМ АТОЛ
-    libfptr_handle fptr; //Инициализируем драйвер
+int Atol::isConnection(const Connection &connection, std::wstring &error) noexcept{//Р›Р°Р№С‚ РјРµС‚РѕРґ РґР»СЏ РїСЂРѕРІРµСЂРєРё СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ РљРљРњ РђРўРћР›
+    libfptr_handle fptr; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РґСЂР°Р№РІРµСЂ
 
-    if (libfptr_create(&fptr) < 0){ //Проверка инициализация драйвера
+    if (libfptr_create(&fptr) < 0){ //РџСЂРѕРІРµСЂРєР° РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
         error = getAnError(fptr);
         return -1;
     }
@@ -389,18 +389,18 @@ int Atol::isConnection(const Connection &connection, std::wstring &error) noexce
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_COM_FILE, std::wstring(connection.getSerialPort()).c_str());
     libfptr_set_single_setting(fptr, LIBFPTR_SETTING_BAUDRATE, std::to_wstring(static_cast<int>(connection.getBaudrate())).c_str());
 
-    if (libfptr_apply_single_settings(fptr) !=0 ){ //Проверяем успешность выполнения метода применения настроек
+    if (libfptr_apply_single_settings(fptr) !=0 ){ //РџСЂРѕРІРµСЂСЏРµРј СѓСЃРїРµС€РЅРѕСЃС‚СЊ РІС‹РїРѕР»РЅРµРЅРёСЏ РјРµС‚РѕРґР° РїСЂРёРјРµРЅРµРЅРёСЏ РЅР°СЃС‚СЂРѕРµРє
         error = getAnError(fptr);
         return -1;
     }
 
-    if (libfptr_open(fptr) !=0 ){ //Проверяем успешность открытия соединения
+    if (libfptr_open(fptr) !=0 ){ //РџСЂРѕРІРµСЂСЏРµРј СѓСЃРїРµС€РЅРѕСЃС‚СЊ РѕС‚РєСЂС‹С‚РёСЏ СЃРѕРµРґРёРЅРµРЅРёСЏ
         error = getAnError(fptr);
         return -1;
     }
 
-    libfptr_close(fptr); //Дисконнект
-    libfptr_destroy(&fptr);//Деинициализация драйвера
+    libfptr_close(fptr); //Р”РёСЃРєРѕРЅРЅРµРєС‚
+    libfptr_destroy(&fptr);//Р”РµРёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РґСЂР°Р№РІРµСЂР°
 
     return libfptr_is_opened(fptr);
 }

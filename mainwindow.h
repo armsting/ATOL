@@ -1,6 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 #include <QMainWindow>
 #include "kkmparameters.h"
 #include "connection.h"
@@ -45,8 +43,7 @@ private:
     KkmParameters kkmparameters;
     Connection connection;
     std::wstring error;
-    QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
-    Baudrate convertIntToBaudrate(int Baudrate);
-    bool validationINN(const std::string &CashierINN);
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    Baudrate convertIntToBaudrate(int baudrate_);
+    bool validationINN(const std::wstring &CashierINN);
 };
-#endif // MAINWINDOW_H

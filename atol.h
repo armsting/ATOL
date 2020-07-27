@@ -1,6 +1,4 @@
-#ifndef ATOLDRIVER_H
-#define ATOLDRIVER_H
-
+#pragma once
 #include "libfptr10.h"
 #include "kkmparameters.h"
 #include "enumkkm.h"
@@ -8,7 +6,7 @@
 
 
 /*
- * Класс реализует методы основные методы работы с ККМ АТОЛ
+ * РљР»Р°СЃСЃ СЂРµР°Р»РёР·СѓРµС‚ РјРµС‚РѕРґС‹ РѕСЃРЅРѕРІРЅС‹Рµ РјРµС‚РѕРґС‹ СЂР°Р±РѕС‚С‹ СЃ РљРљРњ РђРўРћР›
 */
 class Atol{
 
@@ -33,5 +31,3 @@ private:
     static int closeFiscalDocument(libfptr_handle fptr, CheckType type) noexcept;
 
 };
-
-#endif // ATOLDRIVER_H
