@@ -35,6 +35,7 @@ HEADERS += \
     position.h
 
 FORMS += \
+    insert_withdraw_cash.ui \
     mainwindow.ui
 
 TRANSLATIONS += \
