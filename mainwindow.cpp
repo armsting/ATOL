@@ -3,9 +3,6 @@
 #include <iostream>
 #include <device.h>
 #include "atol.h"
-#include <codecvt>
-#include <io.h>
-#include <fcntl.h>
 #include <locale>
 #include <QMessageBox>
 #include <QString>
@@ -18,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-    getComPortList(comPortList);
+    Device::getComPortList(comPortList);
 
     ui->setupUi(this);
 
@@ -121,7 +118,7 @@ void MainWindow::on_payButton_clicked()
 
 void MainWindow::on_refresh_COMPort_listButton_clicked()
 {
-    getComPortList(comPortList);//Обновили список COM портов
+    Device::getComPortList(comPortList);//Обновили список COM портов
 
     ui->comboBox_COMPort->clear();//Очистка списка COM портов
 
@@ -239,7 +236,7 @@ void MainWindow::on_pushButton_setCashier_clicked(){
         return;
     }
 
-    if (!MainWindow::validationINN(CashierINN)){
+    if (!Device::validationINN(CashierINN)){
         QMessageBox messageBox(QMessageBox::Warning,
                     (codec->toUnicode("Retail luxury")),
                     (codec->toUnicode("ИНН невалиден")),
@@ -263,19 +260,4 @@ void MainWindow::on_pushButton_setCashier_clicked(){
                                                    convert.to_bytes(CashierName).c_str() + codec->toUnicode(",   ИНН:  ") + convert.to_bytes(CashierINN).c_str());
     }
     ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
-}
-
-bool MainWindow::validationINN(const std::wstring &CashierINN){
-
-    if (CashierINN.length() == 0)
-        return true;
-
-    if (CashierINN.length() != 10 && CashierINN.length() != 12){
-        return false;
-    }
-
-    if (CashierINN.find_first_not_of(L"0123456789") != std::wstring::npos)
-        return false;
-
-    return true;
 }

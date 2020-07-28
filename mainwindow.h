@@ -45,5 +45,4 @@ private:
     std::wstring error;
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     Baudrate convertIntToBaudrate(int baudrate_);
-    bool validationINN(const std::wstring &CashierINN);
 };
