@@ -31,7 +31,7 @@ bool validationINN(const std::wstring &CashierINN){
         return false;
     }
     /*
-    int controlSum_1 = 0, controlSum_2 = 0;
+    int controlSum_1 = 0, controlSum_2 = 0;444
 
     if (CashierINN.length() == 10){
         controlSum_1 = (int)CashierINN[0] * 2 + (int)CashierINN[1] * 4 + (int)CashierINN[2] * 10 +
