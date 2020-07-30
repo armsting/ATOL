@@ -3,6 +3,7 @@
 #include <cmath>
 #include <codecvt>
 #include <locale>
+#include <bits/stdc++.h>
 
 namespace Device {
 
