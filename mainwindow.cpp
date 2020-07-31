@@ -31,11 +31,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_CurrentCashier_Name_INN->setFont(f);
     ui->label_pingKKM->setFont(f);
     ui->label_pingKKM->setAlignment(Qt::AlignHCenter);
+
+    cash_insert_form = new CashInsertWithdraw();
+    connect(cash_insert_form, SIGNAL(on_click()), this, SLOT(on_Click_slot()));
+    connect(ui->Insert_Withdraw_cashButton, SIGNAL(clicked()), cash_insert_form, SLOT(show()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete cash_insert_form;
 }
 
 void MainWindow::on_shiftOpenButton_clicked()
@@ -104,16 +109,6 @@ void MainWindow::on_x_reportButton_clicked()
                 this);
      messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("ОК")));
      messageBox.exec();
-}
-
-void MainWindow::on_Insert_Withdraw_cash_clicked()
-{
-
-}
-
-void MainWindow::on_payButton_clicked()
-{
-
 }
 
 void MainWindow::on_refresh_COMPort_listButton_clicked()
@@ -260,4 +255,20 @@ void MainWindow::on_pushButton_setCashier_clicked(){
                                                    convert.to_bytes(CashierName).c_str() + codec->toUnicode(",   ИНН:  ") + convert.to_bytes(CashierINN).c_str());
     }
     ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
+}
+
+void MainWindow::on_Insert_Withdraw_cashButton_clicked()
+{
+
+
+}
+
+void MainWindow::on_Click_slot(){
+    QMessageBox messageBox(QMessageBox::Warning,
+                (codec->toUnicode("Retail luxury")),
+                (codec->toUnicode("Поймал сигнал!!!!!!")),
+                QMessageBox::Yes,
+                this);
+     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
+     messageBox.exec();
 }

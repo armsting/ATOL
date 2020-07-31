@@ -40,6 +40,9 @@
       <height>341</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>true</bool>
+    </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>

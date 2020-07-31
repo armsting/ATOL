@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     atol.cpp \
+    cashinsertwithdraw.cpp \
     connection.cpp \
     device.cpp \
     kkmparameters.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
 
 HEADERS += \
     atol.h \
+    cashinsertwithdraw.h \
     connection.h \
     device.h \
     enumkkm.h \
@@ -35,7 +37,7 @@ HEADERS += \
     position.h
 
 FORMS += \
-    insert_withdraw_cash.ui \
+    cashinsertwithdraw_form.ui \
     mainwindow.ui
 
 TRANSLATIONS += \

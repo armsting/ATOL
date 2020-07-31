@@ -30,9 +30,8 @@ bool validationINN(const std::wstring &CashierINN){
 
         return false;
     }
-
-    int controlSum_1 = 0, controlSum_2 = 0; //Переменные для вычисления контрольной цифры
-
+    /*
+    int controlSum_1 = 0, controlSum_2 = 0;
 
     if (CashierINN.length() == 10){
         controlSum_1 = (CashierINN[0] - L'0')* 2 + (CashierINN[1] - L'0') * 4 + (CashierINN[2] - L'0') * 10 +

@@ -4,6 +4,7 @@
 #include "connection.h"
 #include "enumkkm.h"
 #include <QTextCodec>
+#include "cashinsertwithdraw.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,10 +24,6 @@ private slots:
 
     void on_x_reportButton_clicked();
 
-    void on_Insert_Withdraw_cash_clicked();
-
-    void on_payButton_clicked();
-
     void on_refresh_COMPort_listButton_clicked();
 
     void on_applySettingsButton_clicked();
@@ -37,6 +34,11 @@ private slots:
 
     void on_pushButton_setCashier_clicked();
 
+    void on_Insert_Withdraw_cashButton_clicked();
+
+public slots:
+    void on_Click_slot();
+
 private:
     Ui::MainWindow *ui;
     std::vector<std::wstring> comPortList;
@@ -45,4 +47,5 @@ private:
     std::wstring error;
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     Baudrate convertIntToBaudrate(int baudrate_);
+    CashInsertWithdraw *cash_insert_form;
 };
