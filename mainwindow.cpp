@@ -147,7 +147,7 @@ void MainWindow::on_pingKKMButton_clicked()
 
     if (Atol::isConnection(connect, error) == 0){
         ui->label_pingKKM->setStyleSheet("color: rgb(0, 100, 0)");
-        ui->label_pingKKM->setText(codec->toUnicode("Связь есть"));
+        ui->label_pingKKM->setText(codec->toUnicode("\nСвязь есть"));
     }
     else{
         ui->label_pingKKM->setStyleSheet("color: rgb(255, 0, 0)");

@@ -24,11 +24,20 @@ bool isValidINN10(const std::wstring &CashierINN){
 
     controlSum_2 *= 11;
 
-    if(std::abs(controlSum_1 - controlSum_2) != CashierINN[9] - L'0'){
-            return false;
+    if(std::abs(controlSum_1 - controlSum_2) == 10){
+            if( (CashierINN[9] - L'0') == 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+     }
+
+    if(std::abs(controlSum_1 - controlSum_2) == CashierINN[9] - L'0'){
+            return true;
         }
 
-    return true;
+    return false;
 }
 
 bool isValidINN12(const std::wstring &CashierINN){
@@ -98,8 +107,13 @@ void getComPortList(std::vector<std::wstring> &comPortList)
 
 bool validationINN(const std::wstring &CashierINN){
 
-    if (CashierINN.length() == 0)
+    if (CashierINN.length() == 0){
         return true;
+    }
+
+    if(CashierINN == L"0000000000" || CashierINN == L"000000000000"){
+        return false;
+    }
 
     if (CashierINN.find_first_not_of(L"0123456789") != std::wstring::npos){
 
