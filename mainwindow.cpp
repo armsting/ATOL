@@ -3,38 +3,25 @@
 #include <iostream>
 #include <device.h>
 #include "atol.h"
-#include <locale>
-#include <QMessageBox>
-#include <QString>
 #include <QTextCodec>
-#include <codecvt>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
     Device::getComPortList(comPortList);
 
     ui->setupUi(this);
 
-    ui->comboBox_COMPort->clear();//Очистка списка COM портов
+    init();//Первичная инициализация интерфейса при включении программы
 
-    for(auto COMPort: comPortList){//Заполняем список COM портов системы
-       ui->comboBox_COMPort->addItem(QString::fromStdWString(COMPort));
-    }
+    cash_insert_form = new CashInsertWithdraw();//Создание формы для внесений/изъятий
 
+    /*Связываем сигнал от кнопки Внести формы для внесений/изъятий со слотом Внесение головной формы и передаём сумму внесённых денег*/
+    connect(cash_insert_form, SIGNAL(on_click_Insert_cash(double)), this, SLOT(on_Insert_cash(double)));
 
-    QFont f("MS Shell Dlg 2", 10);
-
-    ui->label_CurrentCashier_Name_INN->setFont(f);
-    ui->label_pingKKM->setFont(f);
-    ui->label_pingKKM->setAlignment(Qt::AlignHCenter);
-
-    cash_insert_form = new CashInsertWithdraw();
-    connect(cash_insert_form, SIGNAL(on_click()), this, SLOT(on_Click_slot()));
-    connect(ui->Insert_Withdraw_cashButton, SIGNAL(clicked()), cash_insert_form, SLOT(show()));
+    /*Связываем сигнал от кнопки Изъять формы для внесений/изъятий со слотом Изъятие головной формы и передаём сумму изъятых денег*/
+    connect(cash_insert_form, SIGNAL(on_click_Withdraw_cash(double)), this, SLOT(on_Withdraw_cash(double)));
 }
 
 MainWindow::~MainWindow()
@@ -45,21 +32,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_shiftOpenButton_clicked()
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-
     if (Atol::shiftOpen(kkmparameters, error) < 0){
 
         std::string str = convert.to_bytes(error);
 
-        QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Ошибка печати отчёта об открытии смены")),
-                    tr(str.c_str()),
-                    QMessageBox::Yes | QMessageBox::No,
-                    this);
-            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("Повторить")));
-            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("Отмена")));
-
-        if(messageBox.exec() == QMessageBox::Yes){
+        if(message("Ошибка печати отчёта об открытии смены", str, QMessageBox::Warning, true) == QMessageBox::Yes){
             MainWindow::on_shiftOpenButton_clicked();
             return;
         }
@@ -68,32 +45,16 @@ void MainWindow::on_shiftOpenButton_clicked()
         }
     }
 
-    QMessageBox messageBox(QMessageBox::Information,
-                (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("Смена открыта")),
-                QMessageBox::Yes,
-                this);
-     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("ОК")));
-     messageBox.exec();
+    message("Retail luxury", "Смена открыта", QMessageBox::Information, false);
 }
 
 void MainWindow::on_x_reportButton_clicked()
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-
     if (Atol::x_report(kkmparameters, error) < 0){
 
         std::string str = convert.to_bytes(error);
 
-        QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Ошибка при печати Х-отчёта")),
-                    tr(str.c_str()),
-                    QMessageBox::Yes | QMessageBox::No,
-                    this);
-            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("Повторить")));
-            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("Отмена")));
-
-        if(messageBox.exec() == QMessageBox::Yes){
+        if(message("Ошибка при печати Х-отчёта", str, QMessageBox::Warning, true) == QMessageBox::Yes){
             MainWindow::on_x_reportButton_clicked();
             return;
         }
@@ -102,13 +63,7 @@ void MainWindow::on_x_reportButton_clicked()
         }
     }
 
-    QMessageBox messageBox(QMessageBox::Information,
-                (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("Х-отчёт успешно распечатан")),
-                QMessageBox::Yes,
-                this);
-     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("ОК")));
-     messageBox.exec();
+    message("Retail luxury", "Х-отчёт успешно распечатан", QMessageBox::Information, false);
 }
 
 void MainWindow::on_refresh_COMPort_listButton_clicked()
@@ -137,8 +92,6 @@ void MainWindow::on_applySettingsButton_clicked()
 
 void MainWindow::on_pingKKMButton_clicked()
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-
     Connection connect;
 
     connect.setSerialPort(ui->comboBox_COMPort->currentText().toStdWString().c_str());
@@ -186,21 +139,11 @@ Baudrate MainWindow::convertIntToBaudrate(int baudrate_){
 
 void MainWindow::on_shiftCloseButton_clicked()
 {
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
-
     if (Atol::shiftClose(kkmparameters, error) < 0){
 
         std::string str = convert.to_bytes(error);
 
-        QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Ошибка печати Z-отчёта")),
-                    tr(str.c_str()),
-                    QMessageBox::Yes | QMessageBox::No,
-                    this);
-            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("Повторить")));
-            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("Отмена")));
-
-        if(messageBox.exec() == QMessageBox::Yes){
+        if(message("Ошибка печати Z-отчёта", str, QMessageBox::Warning, true) == QMessageBox::Yes){
             MainWindow::on_shiftCloseButton_clicked();
             return;
         }
@@ -209,18 +152,10 @@ void MainWindow::on_shiftCloseButton_clicked()
         }
     }
 
-    QMessageBox messageBox(QMessageBox::Information,
-                (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("Смена закрыта")),
-                QMessageBox::Yes,
-                this);
-     messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
-     messageBox.exec();
+    message("Retail luxury", "Смена закрыта", QMessageBox::Information, false);
 }
 
 void MainWindow::on_pushButton_setCashier_clicked(){
-
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;
 
     std::wstring CashierName = ui->lineEdit_askCashierName->text().toStdWString().c_str();
     std::wstring CashierINN  = ui->lineEdit_askCashierINN->text().toStdWString().c_str();
@@ -232,14 +167,8 @@ void MainWindow::on_pushButton_setCashier_clicked(){
     }
 
     if (!Device::validationINN(CashierINN)){
-        QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Retail luxury")),
-                    (codec->toUnicode("ИНН невалиден")),
-                    QMessageBox::Yes,
-                    this);
-         messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
-         messageBox.exec();
-         return;
+        message("Retail luxury", "ИНН невалиден", QMessageBox::Warning, false);
+        return;
     }
 
 
@@ -254,21 +183,95 @@ void MainWindow::on_pushButton_setCashier_clicked(){
         ui->label_CurrentCashier_Name_INN->setText(codec->toUnicode("Текущий кассир:   ") +
                                                    convert.to_bytes(CashierName).c_str() + codec->toUnicode(",   ИНН:  ") + convert.to_bytes(CashierINN).c_str());
     }
-    ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
 }
 
 void MainWindow::on_Insert_Withdraw_cashButton_clicked()
 {
-
-
+    cash_insert_form->show();//Запуск формы внесения/иъятия
 }
 
-void MainWindow::on_Click_slot(){
-    QMessageBox messageBox(QMessageBox::Warning,
-                (codec->toUnicode("Retail luxury")),
-                (codec->toUnicode("Поймал сигнал!!!!!!")),
+void MainWindow::on_Insert_cash(double cash){
+/*
+   kkmparameters.setPayCashMoney(cash);
+
+   if (Atol::cashInsert(kkmparameters, error) < 0){
+
+       std::string str = convert.to_bytes(error);
+
+       if(message("Ошибка внесения наличности", str, QMessageBox::Warning, true) == QMessageBox::Yes){
+           MainWindow::on_Insert_cash(cash);
+           return;
+        }
+        else {
+           return;
+        }
+    }
+*/
+    message("Retail luxury", "Внесено: " + std::to_string(cash) + " рублей", QMessageBox::Information, false);
+    cash_insert_form->raise();
+}
+
+void MainWindow::on_Withdraw_cash(double cash){
+/*
+    kkmparameters.setPayCashMoney(cash);
+
+    if (Atol::cashWithdraw(kkmparameters, error) < 0){
+
+        std::string str = convert.to_bytes(error);
+
+        if(message("Ошибка изъятия наличности", str, QMessageBox::Warning, true) == QMessageBox::Yes){
+            MainWindow::on_Withdraw_cash(cash);
+            return;
+        }
+        else {
+            return;
+           }
+       }
+*/
+     message("Retail luxury", "Изъято: " + std::to_string(cash) + " рублей", QMessageBox::Information, false);
+     cash_insert_form->raise();
+}
+
+//  Переопределяем событие закрытия основной формы. Если закрыли основную форму, то закрываем и другие формы, тем самым завершая выполения программы
+void MainWindow::closeEvent( QCloseEvent* event )
+{
+    cash_insert_form->close();
+}
+
+// Метод отображения информационных окон и окон запроса действия
+int MainWindow::message(const std::string &title,const std::string &message, QMessageBox::Icon icon, bool request_for_action){
+    if(request_for_action){
+        QMessageBox messageBox(QMessageBox::Warning,
+                    (codec->toUnicode(title.c_str())),
+                    tr(message.c_str()),
+                    QMessageBox::Yes | QMessageBox::No,
+                    this);
+            messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("Повторить")));
+            messageBox.setButtonText(QMessageBox::No, (codec->toUnicode("Отмена")));
+            return messageBox.exec();
+    }
+
+    QMessageBox messageBox(icon,
+                (codec->toUnicode(title.c_str())),
+                (codec->toUnicode(message.c_str())),
                 QMessageBox::Yes,
                 this);
+     messageBox.setWindowFlag(Qt::WindowStaysOnTopHint);
      messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
-     messageBox.exec();
+     return messageBox.exec();
+}
+
+void MainWindow::init(){
+    ui->comboBox_COMPort->clear();//Очистка списка COM портов
+
+    for(auto COMPort: comPortList){//Заполняем список COM портов системы
+       ui->comboBox_COMPort->addItem(QString::fromStdWString(COMPort));
+    }
+
+    QFont f("MS Shell Dlg 2", 10);
+
+    ui->label_CurrentCashier_Name_INN->setFont(f);
+    ui->label_pingKKM->setFont(f);
+    ui->label_pingKKM->setAlignment(Qt::AlignHCenter);
+    ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
 }

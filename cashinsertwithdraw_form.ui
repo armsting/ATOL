@@ -41,7 +41,7 @@
      </font>
     </property>
     <property name="text">
-     <string>0.00</string>
+     <string>0,00</string>
     </property>
     <property name="cursorPosition">
      <number>4</number>

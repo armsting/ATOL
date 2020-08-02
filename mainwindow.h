@@ -4,7 +4,11 @@
 #include "connection.h"
 #include "enumkkm.h"
 #include <QTextCodec>
+#include <QMessageBox>
 #include "cashinsertwithdraw.h"
+#include <codecvt>
+#include <QString>
+#include <locale>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -36,8 +40,15 @@ private slots:
 
     void on_Insert_Withdraw_cashButton_clicked();
 
-public slots:
-    void on_Click_slot();
+    void closeEvent(QCloseEvent* event);
+
+    void on_Insert_cash(double cash);
+
+    void on_Withdraw_cash(double cash_);
+
+    int message(const std::string &title, const std::string &message, QMessageBox::Icon icon, bool request_for_action);
+
+    void init();
 
 private:
     Ui::MainWindow *ui;
@@ -48,4 +59,5 @@ private:
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     Baudrate convertIntToBaudrate(int baudrate_);
     CashInsertWithdraw *cash_insert_form;
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;//Конвертация между wstring и string
 };

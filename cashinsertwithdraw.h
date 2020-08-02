@@ -2,6 +2,7 @@
 
 #include <QMainWindow>
 #include <QString>
+#include <regex>
 
 namespace Ui {
 class CashInsertWithdraw;
@@ -22,10 +23,24 @@ private slots:
 
     void on_pushButton_cashInsert_clicked();
 
+    void on_pushButton_cashWithdraw_clicked();
+
+    void on_pushButton_100_clicked();
+
+    void on_pushButton_500_clicked();
+
+    void on_pushButton_1000_clicked();
+
+    void on_pushButton_2000_clicked();
+
+    void on_pushButton_5000_clicked();
+
 signals:
-    void on_click();
+    void on_click_Insert_cash(double cash);
+    void on_click_Withdraw_cash(double cash);
 
 private:
     Ui::CashInsertWithdraw *ui;
-    double cash;
+    std::string getFractionalPart(std::string &str);
+    void insertCashSum(double cash);
 };
