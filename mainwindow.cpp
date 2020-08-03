@@ -188,10 +188,11 @@ void MainWindow::on_pushButton_setCashier_clicked(){
 void MainWindow::on_Insert_Withdraw_cashButton_clicked()
 {
     cash_insert_form->show();//Запуск формы внесения/иъятия
+    cash_insert_form->raise();
 }
 
 void MainWindow::on_Insert_cash(double cash){
-/*
+
    kkmparameters.setPayCashMoney(cash);
 
    if (Atol::cashInsert(kkmparameters, error) < 0){
@@ -203,16 +204,17 @@ void MainWindow::on_Insert_cash(double cash){
            return;
         }
         else {
+           cash_insert_form->raise();
            return;
         }
     }
-*/
+
     message("Retail luxury", "Внесено: " + std::to_string(cash) + " рублей", QMessageBox::Information, false);
     cash_insert_form->raise();
 }
 
 void MainWindow::on_Withdraw_cash(double cash){
-/*
+
     kkmparameters.setPayCashMoney(cash);
 
     if (Atol::cashWithdraw(kkmparameters, error) < 0){
@@ -224,10 +226,11 @@ void MainWindow::on_Withdraw_cash(double cash){
             return;
         }
         else {
+            cash_insert_form->raise();
             return;
            }
        }
-*/
+
      message("Retail luxury", "Изъято: " + std::to_string(cash) + " рублей", QMessageBox::Information, false);
      cash_insert_form->raise();
 }

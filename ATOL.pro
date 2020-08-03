@@ -24,6 +24,7 @@ SOURCES += \
     kkmparameters.cpp \
     main.cpp \
     mainwindow.cpp \
+    payment.cpp \
     position.cpp
 
 HEADERS += \
@@ -34,11 +35,13 @@ HEADERS += \
     enumkkm.h \
     kkmparameters.h \
     mainwindow.h \
+    payment.h \
     position.h
 
 FORMS += \
     cashinsertwithdraw_form.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    payment.ui
 
 TRANSLATIONS += \
     ATOL_prg_001.ts
