@@ -36,11 +36,11 @@ private slots:
     void on_pushButton_5000_clicked();
 
 signals:
-    void on_click_Insert_cash(double cash);
-    void on_click_Withdraw_cash(double cash);
+    void on_click_Insert_cash(double cash, const std::string &fractional_part);
+    void on_click_Withdraw_cash(double cash, const std::string &fractional_part);
 
 private:
     Ui::CashInsertWithdraw *ui;
-    std::string getFractionalPart(std::string &str);
     void insertCashSum(double cash);
+    const std::string getFractionalPart(std::string &cash);
 };

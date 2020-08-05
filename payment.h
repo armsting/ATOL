@@ -2,21 +2,26 @@
 #define PAYMENT_H
 
 #include <QMainWindow>
+#include <QString>
 
 namespace Ui {
-class payment;
+class Payment;
 }
 
-class payment : public QMainWindow
+class Payment : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit payment(QWidget *parent = nullptr);
-    ~payment();
+    explicit Payment(QWidget *parent = nullptr);
+    ~Payment();
+
+private slots:
+    void on_pushButton_pay_clicked();
+    void getPaymentSum(double paymentSum);
 
 private:
-    Ui::payment *ui;
+    Ui::Payment *ui;
 };
 
 #endif // PAYMENT_H

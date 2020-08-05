@@ -17,11 +17,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     cash_insert_form = new CashInsertWithdraw();//Создание формы для внесений/изъятий
 
+    payment_form = new Payment();//Создание формы оплаты
+
     /*Связываем сигнал от кнопки Внести формы для внесений/изъятий со слотом Внесение головной формы и передаём сумму внесённых денег*/
-    connect(cash_insert_form, SIGNAL(on_click_Insert_cash(double)), this, SLOT(on_Insert_cash(double)));
+    connect(cash_insert_form, SIGNAL(on_click_Insert_cash(double, const std::string)), this, SLOT(on_Insert_cash(double, const std::string)));
 
     /*Связываем сигнал от кнопки Изъять формы для внесений/изъятий со слотом Изъятие головной формы и передаём сумму изъятых денег*/
-    connect(cash_insert_form, SIGNAL(on_click_Withdraw_cash(double)), this, SLOT(on_Withdraw_cash(double)));
+    connect(cash_insert_form, SIGNAL(on_click_Withdraw_cash(double, const std::string)), this, SLOT(on_Withdraw_cash(double, const std::string)));
+
+    /*Связываем сигнал от кнопки Оплата основной формы и слот от формы Оплаты с передеачей туда суммы к оплате*/
+    connect(this, SIGNAL(paymentSum(double)), payment_form, SLOT(getPaymentSum(double)));
 }
 
 MainWindow::~MainWindow()
@@ -191,7 +196,7 @@ void MainWindow::on_Insert_Withdraw_cashButton_clicked()
     cash_insert_form->raise();
 }
 
-void MainWindow::on_Insert_cash(double cash){
+void MainWindow::on_Insert_cash(double cash, const std::string &fractional_part){
 
    kkmparameters.setPayCashMoney(cash);
 
@@ -200,7 +205,7 @@ void MainWindow::on_Insert_cash(double cash){
        std::string str = convert.to_bytes(error);
 
        if(message("Ошибка внесения наличности", str, QMessageBox::Warning, true) == QMessageBox::Yes){
-           MainWindow::on_Insert_cash(cash);
+           MainWindow::on_Insert_cash(cash, fractional_part);
            return;
         }
         else {
@@ -209,11 +214,11 @@ void MainWindow::on_Insert_cash(double cash){
         }
     }
 
-    message("Retail luxury", "Внесено: " + std::to_string(cash) + " рублей", QMessageBox::Information, false);
+    message("Retail luxury", "Внесено: " + std::to_string(int(cash)) + "," + fractional_part + " рублей", QMessageBox::Information, false);
     cash_insert_form->raise();
 }
 
-void MainWindow::on_Withdraw_cash(double cash){
+void MainWindow::on_Withdraw_cash(double cash, const std::string &fractional_part){
 
     kkmparameters.setPayCashMoney(cash);
 
@@ -222,7 +227,7 @@ void MainWindow::on_Withdraw_cash(double cash){
         std::string str = convert.to_bytes(error);
 
         if(message("Ошибка изъятия наличности", str, QMessageBox::Warning, true) == QMessageBox::Yes){
-            MainWindow::on_Withdraw_cash(cash);
+            MainWindow::on_Withdraw_cash(cash, fractional_part);
             return;
         }
         else {
@@ -231,7 +236,7 @@ void MainWindow::on_Withdraw_cash(double cash){
            }
        }
 
-     message("Retail luxury", "Изъято: " + std::to_string(cash) + " рублей", QMessageBox::Information, false);
+     message("Retail luxury", "Изъято: " + std::to_string(int(cash)) + "," + fractional_part + " рублей", QMessageBox::Information, false);
      cash_insert_form->raise();
 }
 
@@ -239,6 +244,7 @@ void MainWindow::on_Withdraw_cash(double cash){
 void MainWindow::closeEvent( QCloseEvent* event )
 {
     cash_insert_form->close();
+    payment_form->close();
 }
 
 // Метод отображения информационных окон и окон запроса действия
@@ -277,4 +283,11 @@ void MainWindow::init(){
     ui->label_pingKKM->setFont(f);
     ui->label_pingKKM->setAlignment(Qt::AlignHCenter);
     ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
+}
+
+void MainWindow::on_payButton_clicked()
+{
+    payment_form->show();
+    payment_form->raise();
+    emit paymentSum(12.325);
 }

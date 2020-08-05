@@ -33,7 +33,7 @@ void CashInsertWithdraw::on_pushButton_cashInsert_clicked()
     std::string str = ui->lineEdit_cash->text().toStdString();
     str = regex_replace(str, std::regex(","), ".");
 
-    emit on_click_Insert_cash(stod(str));
+    emit on_click_Insert_cash(stod(str), getFractionalPart(str));
 }
 
 void CashInsertWithdraw::on_pushButton_cashWithdraw_clicked()
@@ -41,18 +41,18 @@ void CashInsertWithdraw::on_pushButton_cashWithdraw_clicked()
     std::string str = ui->lineEdit_cash->text().toStdString();
     str = regex_replace(str, std::regex(","), ".");
 
-    emit on_click_Withdraw_cash(stod(str));
+    emit on_click_Withdraw_cash(stod(str), getFractionalPart(str));
 }
 
-std::string CashInsertWithdraw::getFractionalPart(std::string &str){
+const std::string CashInsertWithdraw::getFractionalPart(std::string &cash){
     std::string result;
 
-    for(int i = 0; i < str.length(); i++){
-        if(str[i] == '.'){
+    for(int i = 0; i < cash.length(); i++){
+        if(cash[i] == '.'){
             i++;
-            while(i < str.length())
+            while(i < cash.length())
             {
-                result += str[i];
+                result += cash[i];
                 i++;
             }
             break;
