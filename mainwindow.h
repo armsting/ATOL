@@ -43,9 +43,9 @@ private slots:
 
     void closeEvent(QCloseEvent* event);
 
-    void on_Insert_cash(double cash, const std::string &fractional_part);
+    void on_Insert_cash(double cash);
 
-    void on_Withdraw_cash(double cash, const std::string &fractional_part);
+    void on_Withdraw_cash(double cash);
 
     int message(const std::string &title, const std::string &message, QMessageBox::Icon icon, bool request_for_action);
 

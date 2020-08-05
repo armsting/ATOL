@@ -33,7 +33,7 @@ void CashInsertWithdraw::on_pushButton_cashInsert_clicked()
     std::string str = ui->lineEdit_cash->text().toStdString();
     str = regex_replace(str, std::regex(","), ".");
 
-    emit on_click_Insert_cash(stod(str), getFractionalPart(str));
+    emit on_click_Insert_cash(stod(str));
 }
 
 void CashInsertWithdraw::on_pushButton_cashWithdraw_clicked()
@@ -41,24 +41,7 @@ void CashInsertWithdraw::on_pushButton_cashWithdraw_clicked()
     std::string str = ui->lineEdit_cash->text().toStdString();
     str = regex_replace(str, std::regex(","), ".");
 
-    emit on_click_Withdraw_cash(stod(str), getFractionalPart(str));
-}
-
-const std::string CashInsertWithdraw::getFractionalPart(std::string &cash){
-    std::string result;
-
-    for(int i = 0; i < cash.length(); i++){
-        if(cash[i] == '.'){
-            i++;
-            while(i < cash.length())
-            {
-                result += cash[i];
-                i++;
-            }
-            break;
-        }
-    }
-    return result;
+    emit on_click_Withdraw_cash(stod(str));
 }
 
 void CashInsertWithdraw::on_pushButton_100_clicked()
@@ -74,15 +57,17 @@ void CashInsertWithdraw::insertCashSum(double cash){
 
     try {
         cash_sum = stod(str);
-        cash_sum += cash;
+        cash_sum +=  cash;
 
     } catch (...) {
         on_pushButton_Clear_clicked();
         return;
     }
 
-    str = std::to_string(int(cash_sum))  + "," + getFractionalPart(str);
-    ui->lineEdit_cash->setText(QString::fromStdString(str));
+    char sum[20];
+
+    sprintf (&sum[0], "%.2lf", cash_sum);
+    ui->lineEdit_cash->setText(QString::fromStdString(sum));
 }
 
 void CashInsertWithdraw::on_pushButton_500_clicked()
