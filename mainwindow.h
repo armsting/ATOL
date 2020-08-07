@@ -54,7 +54,7 @@ private slots:
     void on_payButton_clicked();
 
 signals:
-    void paymentSum(double paymentSum);
+    void paymentSum(double paymentSum, CheckType checkType);
 
 private:
     Ui::MainWindow *ui;

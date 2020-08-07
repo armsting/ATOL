@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(cash_insert_form, SIGNAL(on_click_Withdraw_cash(double)), this, SLOT(on_Withdraw_cash(double)));
 
     /*Связываем сигнал от кнопки Оплата основной формы и слот от формы Оплаты с передеачей туда суммы к оплате*/
-    connect(this, SIGNAL(paymentSum(double)), payment_form, SLOT(getPaymentSum(double)));
+    connect(this, SIGNAL(paymentSum(double, CheckType)), payment_form, SLOT(getPaymentSum(double, CheckType)));
 }
 
 MainWindow::~MainWindow()
@@ -297,5 +297,14 @@ void MainWindow::on_payButton_clicked()
 {
     payment_form->show();
     payment_form->raise();
-    emit paymentSum(12.325);
+    emit paymentSum(12.325, CheckType::SALE_RETURN);
+
+    if(ui->comboBox_checkType->currentText().toStdString() == "ПРИХОД")
+        emit paymentSum(12.325, CheckType::SALE);
+    if(ui->comboBox_checkType->currentText().toStdString() == "РАСХОД")
+        emit paymentSum(12.325, CheckType::BUY);
+    if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ ПРИХОДА")
+        emit paymentSum(12.325, CheckType::SALE_RETURN);
+    if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ РАСХОДА")
+        emit paymentSum(12.325, CheckType::BUY_RETURN);
 }

@@ -542,7 +542,7 @@
     <property name="checkable">
      <bool>false</bool>
     </property>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="comboBox_checkType">
      <property name="geometry">
       <rect>
        <x>10</x>

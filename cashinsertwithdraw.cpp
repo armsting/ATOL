@@ -6,11 +6,9 @@ CashInsertWithdraw::CashInsertWithdraw(QWidget *parent) :
     ui(new Ui::CashInsertWithdraw)
 {
     ui->setupUi(this);
-    QDoubleValidator* doubleValidator = new QDoubleValidator(0, 40000000, 2, ui->lineEdit_cash);
+    QDoubleValidator* doubleValidator = new QDoubleValidator(0, 40000000, 2);
     doubleValidator->setNotation(QDoubleValidator::StandardNotation);
     ui->lineEdit_cash->setValidator(doubleValidator);
-
-   // this->setWindowFlags(Qt::WindowStaysOnTopHint);
 }
 
 CashInsertWithdraw::~CashInsertWithdraw()
