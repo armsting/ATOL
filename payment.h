@@ -20,6 +20,7 @@ class Payment : public QMainWindow
 public:
     explicit Payment(QWidget *parent = nullptr);
     ~Payment();
+    void clear();
 
 private slots:
 
@@ -38,6 +39,10 @@ private:
     double be_paid_in_bank_ = 0;
     void layout_of_the_sums();
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    void message(const std::string &title, const std::string &message, QMessageBox::Icon icon);
+
+signals:
+    void form_of_payment(double be_paid_in_cash_, double be_paid_in_bank_);
 };
 
 #endif // PAYMENT_H

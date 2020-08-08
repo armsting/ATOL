@@ -53,6 +53,14 @@ private slots:
 
     void on_payButton_clicked();
 
+    void pay_a_receipt(double be_paid_in_cash_,double be_paid_in_bank_);
+
+    void on_pushButton_addPosition_clicked();
+
+    void on_pushButton_rowDelete_clicked();
+
+    void on_pushButton_clearTable_clicked();
+
 signals:
     void paymentSum(double paymentSum, CheckType checkType);
 
@@ -67,4 +75,5 @@ private:
     CashInsertWithdraw *cash_insert_form;
     Payment *payment_form;
     std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;//Конвертация между wstring и string
+    void clearTableRow(int row);
 };

@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     /*Связываем сигнал от кнопки Оплата основной формы и слот от формы Оплаты с передеачей туда суммы к оплате*/
     connect(this, SIGNAL(paymentSum(double, CheckType)), payment_form, SLOT(getPaymentSum(double, CheckType)));
+
+    /*Связываем сигнал от кнопки Оплатить формы оплаты со слотом pay_a_receipt головной формы и передаём сумму нала/безнала*/
+    connect(payment_form, SIGNAL(form_of_payment(double, double)), this, SLOT(pay_a_receipt(double, double)));
 }
 
 MainWindow::~MainWindow()
@@ -291,13 +294,66 @@ void MainWindow::init(){
     ui->label_pingKKM->setFont(f);
     ui->label_pingKKM->setAlignment(Qt::AlignHCenter);
     ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
+
+  //  ui->tableWidget_saleList->setEditTriggers(QTableWidget::NoEditTriggers);
+   // on_pushButton_addPosition_clicked();
 }
 
 void MainWindow::on_payButton_clicked()
 {
+
+    QWidget *widget;
+    QLineEdit *lineEdit;
+    QComboBox *enumNDS;
+    std::string productName;
+    std::string price;
+    std::string quantity;
+    std::string NDS;
+
+    kkmparameters.clearPositionsList();
+    Position position;
+
+    for(int row = ui->tableWidget_saleList->rowCount() - 1; row >= 0; row--){
+
+        widget = ui->tableWidget_saleList->cellWidget(row, 1);
+        lineEdit = static_cast<QLineEdit*>(widget);
+
+        position.setName(lineEdit->text().toStdWString());
+
+        widget = ui->tableWidget_saleList->cellWidget(row, 2);
+        lineEdit = static_cast<QLineEdit*>(widget);
+
+        try {
+            price = lineEdit->text().toStdString();
+            price = regex_replace(price, std::regex(","), ".");
+            position.setPrice(stod(price));
+        } catch (...) {
+
+           message("Неверная цена", "Проверьте правильность заполнения цен", QMessageBox::Warning, false);
+           return;
+        }
+
+        widget = ui->tableWidget_saleList->cellWidget(row, 3);
+        lineEdit = static_cast<QLineEdit*>(widget);
+
+        try {
+            quantity = lineEdit->text().toStdString();
+            quantity = regex_replace(quantity, std::regex(","), ".");
+            position.setQuantity(stod(quantity));
+        } catch (...) {
+
+           message("Неверное количество", std::to_string(lineEdit->text().toDouble()), QMessageBox::Warning, false);
+           return;
+        }
+
+        widget = ui->tableWidget_saleList->cellWidget(row, 4);
+        enumNDS = static_cast<QComboBox*>(widget);
+        NDS = enumNDS->currentText().toStdString();
+    }
+
+    payment_form->clear();
     payment_form->show();
     payment_form->raise();
-    emit paymentSum(12.325, CheckType::SALE_RETURN);
 
     if(ui->comboBox_checkType->currentText().toStdString() == "ПРИХОД")
         emit paymentSum(12.325, CheckType::SALE);
@@ -307,4 +363,89 @@ void MainWindow::on_payButton_clicked()
         emit paymentSum(12.325, CheckType::SALE_RETURN);
     if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ РАСХОДА")
         emit paymentSum(12.325, CheckType::BUY_RETURN);
+}
+
+void MainWindow::pay_a_receipt(double be_paid_in_cash_, double be_paid_in_bank_){
+    message("Пришло", "Нал: " + std::to_string(be_paid_in_cash_) + ",  БезНал: " + std::to_string(be_paid_in_bank_), QMessageBox::Information, false);
+}
+
+void MainWindow::on_pushButton_addPosition_clicked()
+{
+    int rowCount = ui->tableWidget_saleList->rowCount();
+
+    ui->tableWidget_saleList->insertRow(0);
+    QComboBox *enumNDS = new QComboBox();
+    enumNDS->addItem("БЕЗ НДС");
+    enumNDS->addItem("НДС-20%");
+    enumNDS->addItem("НДС-10%");
+    enumNDS->addItem("НДС-0%");
+
+    QLineEdit *number = new QLineEdit();
+    QLineEdit *price = new QLineEdit();
+    QLineEdit *quantity = new QLineEdit();
+    QLineEdit *product_name = new QLineEdit();
+
+    number->setText(std::to_string(rowCount + 1).c_str());
+    price->setText("0,00");
+    quantity->setText("1,000");
+    product_name->setText("Условный товар");
+
+    number->setFrame( false );
+    price->setFrame( false );
+    quantity->setFrame( false );
+    product_name->setFrame( false );
+
+    number->setReadOnly(true);
+
+    QDoubleValidator* doubleValidator_price = new QDoubleValidator(0, 40000000, 2);
+    QDoubleValidator* doubleValidator_quantity = new QDoubleValidator(0.001, 9999, 3);
+
+    doubleValidator_price->setNotation(QDoubleValidator::StandardNotation);
+    doubleValidator_quantity->setNotation(QDoubleValidator::StandardNotation);
+
+    price->setValidator(doubleValidator_price);
+    quantity->setValidator(doubleValidator_quantity);
+
+    ui->tableWidget_saleList->setCellWidget(0, 0, number);
+    ui->tableWidget_saleList->setCellWidget(0, 1, product_name);
+    ui->tableWidget_saleList->setCellWidget(0, 2 , price);
+    ui->tableWidget_saleList->setCellWidget(0, 3 , quantity);
+    ui->tableWidget_saleList->setCellWidget(0, 4 , enumNDS);
+
+
+    ui->tableWidget_saleList->setColumnWidth(0, 50);
+    ui->tableWidget_saleList->setColumnWidth(1, 510);
+    ui->tableWidget_saleList->setColumnWidth(2, 80);
+    ui->tableWidget_saleList->setColumnWidth(3, 80);
+    ui->tableWidget_saleList->setColumnWidth(4, 80);
+    ui->tableWidget_saleList->horizontalHeader()->setSectionResizeMode (QHeaderView::Fixed);
+}
+
+void MainWindow::on_pushButton_rowDelete_clicked()
+{
+   int row = ui->tableWidget_saleList->rowCount();
+
+   if(row == 0){
+        return;
+   }
+
+   clearTableRow(row);
+}
+
+void MainWindow::on_pushButton_clearTable_clicked(){
+
+    for(int row = ui->tableWidget_saleList->rowCount(); row > 0; row--){
+         clearTableRow(row);
+       }
+}
+
+void MainWindow::clearTableRow(int row){
+
+    ui->tableWidget_saleList->removeCellWidget(row - 1, 0);
+    ui->tableWidget_saleList->removeCellWidget(row - 1, 1);
+    ui->tableWidget_saleList->removeCellWidget(row - 1, 2);
+    ui->tableWidget_saleList->removeCellWidget(row - 1, 3);
+    ui->tableWidget_saleList->removeCellWidget(row - 1, 4);
+
+    ui->tableWidget_saleList->removeRow(row - 1);
 }

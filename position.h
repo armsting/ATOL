@@ -11,8 +11,8 @@ public:
     Position();
     Position(const std::wstring &name, double price, double quantity, VATRate vat) noexcept;
     void setName(const std::wstring &name) noexcept;
-    void setPrice(double price) noexcept;
-    void setQuantity(double quantity) noexcept;
+    void setPrice(double price);
+    void setQuantity(double quantity);
     void setTax_type(VATRate vat) noexcept;
 
     std::wstring getName() const noexcept;

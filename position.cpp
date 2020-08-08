@@ -1,6 +1,6 @@
 #include "position.h"
 
-/* ласс описывает параметры товарной позиции
+/* ласс описывает параметры товарной позиции
 */
 
 Position::Position(){
@@ -16,16 +16,16 @@ void Position::setName(const std::wstring &name) noexcept{
     name_ = name;
 }
 
-void Position::setPrice(double price) noexcept{
+void Position::setPrice(double price){
     if(price < 0){
-        throw ("÷ена товарной позиции не может быть отрицательной");
+        throw ("Цена товарной позиции не может быть отрицательной");
     }
     price_ = price;
 }
 
-void Position::setQuantity(double quantity) noexcept{
+void Position::setQuantity(double quantity){
     if(quantity <= 0){
-        throw (" оличество у товарной позиции не может быть >=0");
+        throw ("Количество у товарной позиции не может быть <=0");
     }
     quantity_ = quantity;
 }

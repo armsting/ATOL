@@ -83,6 +83,7 @@ void Payment::layout_of_the_sums(){
     } catch (...) {
         ui->lineEdit_cash_money->setText("0,00");
         be_paid_in_cash_ = 0;
+        return;
     }
 
     try {
@@ -90,7 +91,8 @@ void Payment::layout_of_the_sums(){
 
     } catch (...) {
         ui->lineEdit_bank_money->setText("0,00");
-         be_paid_in_bank_ = 0;
+        be_paid_in_bank_ = 0;
+        return;
     }
 
     char sum[20];
@@ -102,27 +104,27 @@ void Payment::layout_of_the_sums(){
          return;
     }
 
-    if(std::abs(be_paid_in_cash_ - paymentSum_) <= 0.009 && be_paid_in_bank_ == 0){
+    if(std::abs(be_paid_in_cash_ - paymentSum_) <= 0.005 && be_paid_in_bank_ == 0){
          sprintf (&sum[0], "%.2lf", paymentSum_);
          ui->label_form_of_payment->setText(("НАЛИЧНЫМИ: " + std::string(sum)).c_str());
          return;
     }
 
-    if(paymentSum_ > (be_paid_in_cash_ + be_paid_in_bank_) && paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_) >= 0.009){
+    if((paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_)) >= 0.005){
          sprintf (&sum[0], "%.2lf",  paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_));
          ui->label_form_of_payment->setText(("ЕЩЁ ВНЕСТИ: " + std::string(sum)).c_str());
+         return;
+    }
+
+    if((paymentSum_ - be_paid_in_bank_ < 0 && be_paid_in_cash_ == 0) || (paymentSum_ - be_paid_in_bank_ >= 0.004 && be_paid_in_cash_ == 0)){
+         sprintf (&sum[0], "%.2lf", be_paid_in_bank_);
+         ui->label_form_of_payment->setText(("БЕЗНАЛИЧНЫМИ: " + std::string(sum)).c_str());
          return;
     }
 
     if(paymentSum_ < ( be_paid_in_cash_+ be_paid_in_bank_)){
          sprintf (&sum[0], "%.2lf", ( be_paid_in_cash_+ be_paid_in_bank_) - paymentSum_);
          ui->label_form_of_payment->setText(("СДАЧА: " + std::string(sum)).c_str());
-         return;
-    }
-
-    if(be_paid_in_cash_ == 0 && be_paid_in_bank_ != 0){
-         sprintf (&sum[0], "%.2lf", be_paid_in_bank_);
-         ui->label_form_of_payment->setText(("БЕЗНАЛИЧНЫМИ: " + std::string(sum)).c_str());
          return;
     }
 
@@ -136,12 +138,41 @@ void Payment::layout_of_the_sums(){
 
 void Payment::on_pushButton_pay_clicked()
 {
-        QMessageBox messageBox(QMessageBox::Warning,
-                    (codec->toUnicode("Неверная сумма оплаты")),
-                    (codec->toUnicode("Косяк")),
+    if(be_paid_in_bank_ == 0 && be_paid_in_cash_ == 0){
+        emit form_of_payment(paymentSum_, be_paid_in_bank_);
+        return;
+    }
+
+    if(be_paid_in_bank_ > paymentSum_ >= 0.004){
+       message("Предупреждение", "Сумма оплаты БЕЗНАЛИЧНЫМИ\nне может быть "
+                                 "больше итога по чеку.\n    Исправьте сумму БЕЗНАЛ.", QMessageBox::Warning);
+       return;
+   }
+
+   if((paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_)) >= 0.005){
+       message("Предупреждение", "Недостаточная сумма для оплаты чека\n"
+                                 "      Внесите недостающую сумму", QMessageBox::Warning);
+       return;
+   }
+
+   emit form_of_payment(be_paid_in_cash_, be_paid_in_bank_);
+}
+
+void Payment::message(const std::string &title, const std::string &message,  QMessageBox::Icon icon){
+    QMessageBox messageBox(icon,
+                    (codec->toUnicode(title.c_str())),
+                    (codec->toUnicode(message.c_str())),
                     QMessageBox::Yes,
                     this);
          messageBox.setWindowFlag(Qt::WindowStaysOnTopHint);
          messageBox.setButtonText(QMessageBox::Yes, (codec->toUnicode("OK")));
          messageBox.exec();
 }
+
+void Payment::clear(){
+    ui->lineEdit_bank_money->setText("0,00");
+    ui->lineEdit_cash_money->setText("0,00");
+    ui->lineEdit_cash_money->setFocus();
+}
+
+
