@@ -9,8 +9,8 @@ class Position
 {
 public:
     Position();
-    Position(const std::wstring &name, double price, double quantity, VATRate vat) noexcept;
-    void setName(const std::wstring &name) noexcept;
+    Position(const std::wstring &name, double price, double quantity, VATRate vat);
+    void setName(const std::wstring &name);
     void setPrice(double price);
     void setQuantity(double quantity);
     void setTax_type(VATRate vat) noexcept;

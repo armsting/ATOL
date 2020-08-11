@@ -7,12 +7,16 @@ Position::Position(){
 }
 
 
-Position::Position(const std::wstring &name, double price, double quantity, VATRate vat) noexcept :vat_(vat), name_(name) {
+Position::Position(const std::wstring &name, double price, double quantity, VATRate vat):vat_(vat){
+    setName(name);
     setPrice(price);
     setQuantity(quantity);
 }
 
-void Position::setName(const std::wstring &name) noexcept{
+void Position::setName(const std::wstring &name){
+    if(name.length() == 0){
+        throw ("Имя товарной позиции не задано");
+    }
     name_ = name;
 }
 

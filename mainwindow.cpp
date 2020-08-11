@@ -36,6 +36,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete cash_insert_form;
+    delete payment_form;
 }
 
 void MainWindow::on_shiftOpenButton_clicked()
@@ -212,7 +213,7 @@ void MainWindow::on_Insert_cash(double cash){
            return;
         }
         else {
-           cash_insert_form->raise();
+           cash_insert_form->close();
            return;
         }
     }
@@ -221,8 +222,8 @@ void MainWindow::on_Insert_cash(double cash){
 
    sprintf (&sum[0], "%.2lf", cash);
 
-    message("Retail luxury", "Внесено: " + std::string(sum) + " рублей", QMessageBox::Information, false);
-    cash_insert_form->raise();
+   message("Retail luxury", "Внесено: " + std::string(sum) + " рублей", QMessageBox::Information, false);
+   cash_insert_form->close();
 }
 
 void MainWindow::on_Withdraw_cash(double cash){
@@ -238,7 +239,7 @@ void MainWindow::on_Withdraw_cash(double cash){
             return;
         }
         else {
-            cash_insert_form->raise();
+            cash_insert_form->close();
             return;
            }
        }
@@ -248,7 +249,7 @@ void MainWindow::on_Withdraw_cash(double cash){
     sprintf (&sum[0], "%.2lf", cash);
 
     message("Retail luxury", "Изъято: " + std::string(sum) + " рублей", QMessageBox::Information, false);
-    cash_insert_form->raise();
+    cash_insert_form->close();
 }
 
 //  Переопределяем событие закрытия основной формы. Если закрыли основную форму, то закрываем и другие формы, тем самым завершая выполения программы
@@ -295,60 +296,45 @@ void MainWindow::init(){
     ui->label_pingKKM->setAlignment(Qt::AlignHCenter);
     ui->label_CurrentCashier_Name_INN->setStyleSheet("color: rgb(0, 100, 0)");
 
-  //  ui->tableWidget_saleList->setEditTriggers(QTableWidget::NoEditTriggers);
-   // on_pushButton_addPosition_clicked();
+    on_pushButton_addPosition_clicked();//Добавляем одну пустую строку при запуске программы
 }
 
 void MainWindow::on_payButton_clicked()
 {
-
-    QWidget *widget;
-    QLineEdit *lineEdit;
-    QComboBox *enumNDS;
-    std::string productName;
-    std::string price;
-    std::string quantity;
-    std::string NDS;
+    double price;
+    double quantity;
+    double payment_sum = 0;
 
     kkmparameters.clearPositionsList();
     Position position;
 
+    if (ui->tableWidget_saleList->rowCount() == 0){
+        message("Ошибка", "Список товарных позиций пуст.", QMessageBox::Warning, false);
+        return;
+    }
+
     for(int row = ui->tableWidget_saleList->rowCount() - 1; row >= 0; row--){
 
-        widget = ui->tableWidget_saleList->cellWidget(row, 1);
-        lineEdit = static_cast<QLineEdit*>(widget);
-
-        position.setName(lineEdit->text().toStdWString());
-
-        widget = ui->tableWidget_saleList->cellWidget(row, 2);
-        lineEdit = static_cast<QLineEdit*>(widget);
-
         try {
-            price = lineEdit->text().toStdString();
-            price = regex_replace(price, std::regex(","), ".");
-            position.setPrice(stod(price));
-        } catch (...) {
+            price = get_price(row);
+            quantity = get_quantity(row);
 
-           message("Неверная цена", "Проверьте правильность заполнения цен", QMessageBox::Warning, false);
+            position.setName(get_product_name(row));
+            position.setPrice(get_price(row));
+            position.setQuantity(get_quantity(row));
+            position.setTax_type(getVATRate(row));
+
+        } catch (const char *str) {
+
+           message("Ошибка", &str[0], QMessageBox::Warning, false);
            return;
+        } catch (...){
+            message("Ошибка", "Неизвестная ошибка", QMessageBox::Warning, false);
+            return;
         }
 
-        widget = ui->tableWidget_saleList->cellWidget(row, 3);
-        lineEdit = static_cast<QLineEdit*>(widget);
-
-        try {
-            quantity = lineEdit->text().toStdString();
-            quantity = regex_replace(quantity, std::regex(","), ".");
-            position.setQuantity(stod(quantity));
-        } catch (...) {
-
-           message("Неверное количество", std::to_string(lineEdit->text().toDouble()), QMessageBox::Warning, false);
-           return;
-        }
-
-        widget = ui->tableWidget_saleList->cellWidget(row, 4);
-        enumNDS = static_cast<QComboBox*>(widget);
-        NDS = enumNDS->currentText().toStdString();
+        payment_sum += price * quantity;
+        kkmparameters.addPosition(position);
     }
 
     payment_form->clear();
@@ -356,17 +342,38 @@ void MainWindow::on_payButton_clicked()
     payment_form->raise();
 
     if(ui->comboBox_checkType->currentText().toStdString() == "ПРИХОД")
-        emit paymentSum(12.325, CheckType::SALE);
+        emit paymentSum(payment_sum, CheckType::SALE);
     if(ui->comboBox_checkType->currentText().toStdString() == "РАСХОД")
-        emit paymentSum(12.325, CheckType::BUY);
+        emit paymentSum(payment_sum, CheckType::BUY);
     if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ ПРИХОДА")
-        emit paymentSum(12.325, CheckType::SALE_RETURN);
+        emit paymentSum(payment_sum, CheckType::SALE_RETURN);
     if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ РАСХОДА")
-        emit paymentSum(12.325, CheckType::BUY_RETURN);
+        emit paymentSum(payment_sum, CheckType::BUY_RETURN);
 }
 
 void MainWindow::pay_a_receipt(double be_paid_in_cash_, double be_paid_in_bank_){
-    message("Пришло", "Нал: " + std::to_string(be_paid_in_cash_) + ",  БезНал: " + std::to_string(be_paid_in_bank_), QMessageBox::Information, false);
+
+    kkmparameters.setPayCashMoney(be_paid_in_cash_);
+    kkmparameters.setPayCashMoney(be_paid_in_bank_);
+
+    if (Atol::formReceipt(kkmparameters, error) < 0){
+
+        std::string str = convert.to_bytes(error);
+
+        if(message("Ошибка регистрации чека", str, QMessageBox::Warning, true) == QMessageBox::Yes){
+            MainWindow::pay_a_receipt(be_paid_in_cash_, be_paid_in_bank_);
+            return;
+        }
+        else {
+            payment_form->close();
+            return;
+           }
+       }
+    payment_form->close();
+    message("Retail luxury", "Регистрация чека прошла успешно!\nВыйдайте чек покупателю", QMessageBox::Information, false);
+
+    on_pushButton_clearTable_clicked();
+    on_pushButton_addPosition_clicked();
 }
 
 void MainWindow::on_pushButton_addPosition_clicked()
@@ -386,8 +393,11 @@ void MainWindow::on_pushButton_addPosition_clicked()
     QLineEdit *product_name = new QLineEdit();
 
     number->setText(std::to_string(rowCount + 1).c_str());
-    price->setText("0,00");
+
+    price->setText("1,00");
     quantity->setText("1,000");
+
+
     product_name->setText("Условный товар");
 
     number->setFrame( false );
@@ -409,7 +419,11 @@ void MainWindow::on_pushButton_addPosition_clicked()
     ui->tableWidget_saleList->setCellWidget(0, 0, number);
     ui->tableWidget_saleList->setCellWidget(0, 1, product_name);
     ui->tableWidget_saleList->setCellWidget(0, 2 , price);
+    connect(price, SIGNAL(textChanged(QString)), this, SLOT(calculate_paymentSum()));
+
     ui->tableWidget_saleList->setCellWidget(0, 3 , quantity);
+    connect(quantity, SIGNAL(textChanged(QString)), this, SLOT(calculate_paymentSum()));
+
     ui->tableWidget_saleList->setCellWidget(0, 4 , enumNDS);
 
 
@@ -419,17 +433,28 @@ void MainWindow::on_pushButton_addPosition_clicked()
     ui->tableWidget_saleList->setColumnWidth(3, 80);
     ui->tableWidget_saleList->setColumnWidth(4, 80);
     ui->tableWidget_saleList->horizontalHeader()->setSectionResizeMode (QHeaderView::Fixed);
+
+    calculate_paymentSum();
 }
 
 void MainWindow::on_pushButton_rowDelete_clicked()
 {
    int row = ui->tableWidget_saleList->rowCount();
 
-   if(row == 0){
-        return;
+   if(row == 0){      
+       on_pushButton_addPosition_clicked();
+       return;
    }
 
-   clearTableRow(row);
+   if(row == 1){
+       clearTableRow(1);
+       on_pushButton_addPosition_clicked();
+       return;
+   }
+
+   clearTableRow(1);
+
+   calculate_paymentSum();
 }
 
 void MainWindow::on_pushButton_clearTable_clicked(){
@@ -437,6 +462,7 @@ void MainWindow::on_pushButton_clearTable_clicked(){
     for(int row = ui->tableWidget_saleList->rowCount(); row > 0; row--){
          clearTableRow(row);
        }
+    on_pushButton_addPosition_clicked();
 }
 
 void MainWindow::clearTableRow(int row){
@@ -448,4 +474,94 @@ void MainWindow::clearTableRow(int row){
     ui->tableWidget_saleList->removeCellWidget(row - 1, 4);
 
     ui->tableWidget_saleList->removeRow(row - 1);
+}
+
+const std::wstring MainWindow::get_product_name(int row){
+
+    QWidget *widget = ui->tableWidget_saleList->cellWidget(row, 1);
+    QLineEdit *lineEdit = static_cast<QLineEdit*>(widget);
+
+    return lineEdit->text().toStdWString();
+}
+
+double MainWindow::get_price(int row){
+
+    QWidget *widget = ui->tableWidget_saleList->cellWidget(row, 2);
+    QLineEdit *lineEdit = static_cast<QLineEdit*>(widget);
+
+    std::string price = lineEdit->text().toStdString();
+    price = regex_replace(price, std::regex(","), ".");
+
+    try {
+        stod(price);
+    } catch (...) {
+        throw ("Цена у товарной позиции не задана");
+    }
+
+    return stod(price);
+}
+
+double MainWindow::get_quantity(int row){
+
+    QWidget *widget = ui->tableWidget_saleList->cellWidget(row, 3);
+    QLineEdit *lineEdit = static_cast<QLineEdit*>(widget);
+
+    std::string quantity = lineEdit->text().toStdString();
+    quantity = regex_replace(quantity, std::regex(","), ".");
+
+    try {
+        stod(quantity);
+    } catch (...) {
+        throw "Количество у товарной позиции не задано";
+    }
+
+    return stod(quantity);
+}
+
+VATRate MainWindow::getVATRate(int row){
+
+    QWidget *widget = ui->tableWidget_saleList->cellWidget(row, 4);
+    QComboBox *enumNDS = static_cast<QComboBox*>(widget);
+    std::string NDS = enumNDS->currentText().toStdString();
+
+    if(NDS == "НДС-0%"){
+        return VATRate::VAT0;
+    }
+
+    if(NDS == "НДС-20%"){
+        return VATRate::VAT20;
+    }
+
+    if(NDS == "НДС-10%"){
+        return VATRate::VAT10;
+    }
+
+    return VATRate::VATNO;
+}
+
+void MainWindow::calculate_paymentSum(){
+
+    double price;
+    double quantity;
+    double payment_sum = 0;
+    char sum[20];
+
+    ui->label_total_for_the_receipt->setStyleSheet("color: rgb(255, 69, 0)");
+
+    for(int row = ui->tableWidget_saleList->rowCount() - 1; row >= 0; row--){
+        try {
+            price = get_price(row);
+            quantity = get_quantity(row);
+
+        } catch (...){
+            ui->label_total_for_the_receipt->setText( QString::fromStdString("ИТОГО: 0,00"));
+            return;
+        }
+
+        payment_sum += price * quantity;
+    }
+
+    sprintf (&sum[0], "%.2lf", payment_sum);
+
+    ui->label_total_for_the_receipt->setText( QString::fromStdString("ИТОГО: ") + std::string(sum).c_str());
 }

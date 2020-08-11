@@ -580,185 +580,64 @@
     <property name="title">
      <string>ЧЕК</string>
     </property>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>20</y>
-       <width>91</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Наименование</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_productName">
+    <widget class="QLabel" name="label_total_for_the_receipt">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
-       <width>251</width>
-       <height>31</height>
+       <y>20</y>
+       <width>421</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <pointsize>20</pointsize>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
-      <string>Товар</string>
+      <string>ИТОГО:</string>
      </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>280</x>
-       <y>20</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Количество</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_price">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>40</y>
-       <width>91</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0,000</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>20</y>
-       <width>31</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Цена</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_quantity">
-     <property name="geometry">
-      <rect>
-       <x>370</x>
-       <y>40</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0,00</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>20</y>
-       <width>41</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>НДС</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox_NDS">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>40</y>
-       <width>101</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string>БЕЗ НДС</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>НДС-0%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>НДС-10%</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>НДС-20%</string>
-      </property>
-     </item>
     </widget>
     <widget class="QPushButton" name="pushButton_addPosition">
      <property name="geometry">
       <rect>
-       <x>610</x>
+       <x>440</x>
        <y>20</y>
-       <width>61</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>add</string>
+      <string>Добавить в чек</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_rowDelete">
      <property name="geometry">
       <rect>
-       <x>680</x>
+       <x>570</x>
        <y>20</y>
-       <width>61</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>-</string>
+      <string>Удалить из чека</string>
      </property>
     </widget>
     <widget class="QPushButton" name="pushButton_clearTable">
      <property name="geometry">
       <rect>
-       <x>750</x>
+       <x>700</x>
        <y>20</y>
-       <width>61</width>
+       <width>111</width>
        <height>51</height>
       </rect>
      </property>
      <property name="text">
-      <string>х_Х</string>
+      <string>Очистить чек</string>
      </property>
     </widget>
    </widget>

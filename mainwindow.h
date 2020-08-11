@@ -47,10 +47,6 @@ private slots:
 
     void on_Withdraw_cash(double cash);
 
-    int message(const std::string &title, const std::string &message, QMessageBox::Icon icon, bool request_for_action);
-
-    void init();
-
     void on_payButton_clicked();
 
     void pay_a_receipt(double be_paid_in_cash_,double be_paid_in_bank_);
@@ -60,6 +56,8 @@ private slots:
     void on_pushButton_rowDelete_clicked();
 
     void on_pushButton_clearTable_clicked();
+
+    void calculate_paymentSum();
 
 signals:
     void paymentSum(double paymentSum, CheckType checkType);
@@ -75,5 +73,12 @@ private:
     CashInsertWithdraw *cash_insert_form;
     Payment *payment_form;
     std::wstring_convert<std::codecvt_utf8<wchar_t>> convert;//Конвертация между wstring и string
+    int message(const std::string &title, const std::string &message, QMessageBox::Icon icon, bool request_for_action);
+    void init();
     void clearTableRow(int row);
+
+    const std::wstring get_product_name(int row);
+    double get_price(int row);
+    double get_quantity(int row);
+    VATRate getVATRate(int row);
 };
