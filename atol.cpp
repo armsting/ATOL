@@ -108,6 +108,12 @@ int Atol::cashInsert(const KkmParameters &kkmParameters, std::wstring &error) no
         return -1;
     }
 
+    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Если предыдущий чек не был закрыл, то закрываем/аннулируем его
+        error = getAnError(fptr);
+        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
+        return -1;
+    }
+
     libfptr_set_param_double(fptr, LIBFPTR_PARAM_SUM, kkmParameters.getPayCashMoney());//Записываем сумму
 
     if(libfptr_cash_income(fptr) < 0){//Вносим наличность
@@ -132,6 +138,12 @@ int Atol::cashWithdraw(const KkmParameters &kkmParameters, std::wstring &error) 
     if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
         error = getAnError(fptr);
         libfptr_destroy(&fptr);//Деинициализация драйвера
+        return -1;
+    }
+
+    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Если предыдущий чек не был закрыл, то закрываем/аннулируем его
+        error = getAnError(fptr);
+        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
         return -1;
     }
 
@@ -160,6 +172,12 @@ int Atol::x_report(const KkmParameters &kkmParameters, std::wstring &error) noex
     if (Atol::connection(kkmParameters, fptr) < 0){//Устанавливаем соединение с ККМ
         error = getAnError(fptr);
         libfptr_destroy(&fptr);//Деинициализация драйвера
+        return -1;
+    }
+
+    if (Atol::closeFiscalDocument(fptr, CheckType::SALE) < 0){//Если предыдущий чек не был закрыл, то закрываем/аннулируем его
+        error = getAnError(fptr);
+        Atol::disconnection(fptr);//Дисконнект и деинициализация драйвера
         return -1;
     }
 

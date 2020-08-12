@@ -341,20 +341,31 @@ void MainWindow::on_payButton_clicked()
     payment_form->show();
     payment_form->raise();
 
-    if(ui->comboBox_checkType->currentText().toStdString() == "ПРИХОД")
+    if(ui->comboBox_checkType->currentText().toStdString() == "ПРИХОД"){
         emit paymentSum(payment_sum, CheckType::SALE);
-    if(ui->comboBox_checkType->currentText().toStdString() == "РАСХОД")
+        kkmparameters.setCheckType(CheckType::SALE);
+    }
+
+    if(ui->comboBox_checkType->currentText().toStdString() == "РАСХОД"){
         emit paymentSum(payment_sum, CheckType::BUY);
-    if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ ПРИХОДА")
+        kkmparameters.setCheckType(CheckType::BUY);
+    }
+
+    if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ ПРИХОДА"){
         emit paymentSum(payment_sum, CheckType::SALE_RETURN);
-    if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ РАСХОДА")
+        kkmparameters.setCheckType(CheckType::SALE_RETURN);
+    }
+
+    if(ui->comboBox_checkType->currentText().toStdString() == "ВОЗВРАТ РАСХОДА"){
         emit paymentSum(payment_sum, CheckType::BUY_RETURN);
+        kkmparameters.setCheckType(CheckType::BUY_RETURN);
+    }
 }
 
 void MainWindow::pay_a_receipt(double be_paid_in_cash_, double be_paid_in_bank_){
 
     kkmparameters.setPayCashMoney(be_paid_in_cash_);
-    kkmparameters.setPayCashMoney(be_paid_in_bank_);
+    kkmparameters.setPayBankCardMoney(be_paid_in_bank_);
 
     if (Atol::formReceipt(kkmparameters, error) < 0){
 
@@ -373,7 +384,6 @@ void MainWindow::pay_a_receipt(double be_paid_in_cash_, double be_paid_in_bank_)
     message("Retail luxury", "Регистрация чека прошла успешно!\nВыйдайте чек покупателю", QMessageBox::Information, false);
 
     on_pushButton_clearTable_clicked();
-    on_pushButton_addPosition_clicked();
 }
 
 void MainWindow::on_pushButton_addPosition_clicked()

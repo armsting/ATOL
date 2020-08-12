@@ -122,7 +122,8 @@ void Payment::layout_of_the_sums(){
          return;
     }
 
-    if(paymentSum_ < ( be_paid_in_cash_+ be_paid_in_bank_)){
+    if(std::abs(paymentSum_ - ( be_paid_in_cash_+ be_paid_in_bank_)) > 0.005){
+         double d = paymentSum_ - ( be_paid_in_cash_+ be_paid_in_bank_);
          sprintf (&sum[0], "%.2lf", ( be_paid_in_cash_+ be_paid_in_bank_) - paymentSum_);
          ui->label_form_of_payment->setText(("СДАЧА: " + std::string(sum)).c_str());
          return;
