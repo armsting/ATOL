@@ -111,12 +111,12 @@ void Payment::layout_of_the_sums(){
     }
 
     if((paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_)) >= 0.005){
-         sprintf (&sum[0], "%.2lf",  paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_));
+         sprintf (&sum[0], "%.2lf",  paymentSum_ - (be_paid_in_cash_ + be_paid_in_bank_));        
          ui->label_form_of_payment->setText(("ЕЩЁ ВНЕСТИ: " + std::string(sum)).c_str());
          return;
     }
 
-    if((paymentSum_ - be_paid_in_bank_ < 0 && be_paid_in_cash_ == 0) || (paymentSum_ - be_paid_in_bank_ >= 0.004 && be_paid_in_cash_ == 0)){
+    if((paymentSum_ - be_paid_in_bank_ < 0 && be_paid_in_cash_ == 0) || (paymentSum_ - be_paid_in_bank_ <= 0.004 && be_paid_in_cash_ == 0)){
          sprintf (&sum[0], "%.2lf", be_paid_in_bank_);
          ui->label_form_of_payment->setText(("БЕЗНАЛИЧНЫМИ: " + std::string(sum)).c_str());
          return;
